@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses list</title>
+</head>
+<body>
+<div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+<div th:include="fragments/langselector::langselector"></div>
+<form action="/courses" method="post">
+    <input type="text" name="name" placeholder="name" />
+    <input type="text" name="name_ukr" placeholder="name_ukr" />
+    <input type="text" name="topic" placeholder="topic" />
+    <input type="text" name="topic_ukr" placeholder="topic_ukr" />
+    <input type="date" name="startDate" placeholder="startDate">
+    <input type="date" name="endDate" placeholder="endDate">
+    <button type="submit">Add</button>
+</form>
+<h3> Courses filter </h3>
+<form action="/course_filter" method="get">
+    <input type="text" name="fname" th:value="${fname}?:''" />
+<!--    <input type="text" name="fname_ukr" th:placeholder="${fname_ukr}" />-->
+<!--    <input type="text" name="ftopic" th:placeholder="${ftopic}" />-->
+<!--    <input type="text" name="ftopic_ukr" th:placeholder="${ftopic_ukr}" />-->
+<!--    <input type="date" name="fstartDate" th:placeholder="${fstartDate}">-->
+<!--    <input type="date" name="fduration" th:placeholder="${fduration}">-->
+<!--    <input type="date" name="fendDate" th:placeholder="${fendDate}">-->
+    <button type="submit">Filter</button>
+</form>
+<table>
+    <thead>
+    <tr>
+        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th>
+        <th> startDate </th><th> Duration </th><th> endDate </th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${courses.courses.empty}">
+        <td colspan="2"> No Courses Available </td>
+    </tr>
+    <tr th:each="course : ${courses.courses}">
+        <td><span th:text="${course.id}"> Id</span></td>
+        <td><span th:text="${course.name}"> Name </span></td>
+        <td><span th:text="${course.name_ukr}"> Name </span></td>
+        <td><span th:text="${course.topic}"> Name </span></td>
+        <td><span th:text="${course.topic_ukr}"> Name </span></td>
+        <td><span th:text="${course.startDate}"> Name </span></td>
+        <td><span th:text="${course.duration}"> Name </span></td>
+        <td><span th:text="${course.endDate}"> Name </span></td>
+
+    </tr>
+    </tbody>
+</table>
+
+</form>
+
+</body>
+</html>

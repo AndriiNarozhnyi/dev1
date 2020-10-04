@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{welcome}"></title>
+</head>
+<body>
+
+    <button type="button" th:text="#{switch-en}" onclick="window.location.href='http://localhost:8080/?localeData=en'"></button>
+    <button type="button" th:text="#{switch-uk}" onclick="window.location.href='http://localhost:8080/?localeData=uk'"></button>
+    <br>
+    <span th:text="#{hello}"></span>
+    <br>
+    <span th:text="#{welcome}"></span>
+    <br>
+<a href="/login" th:text="#{login}"></a>
+<a href="/courses" th:text="#{courses}"></a>
+
+</body>
+</html>
