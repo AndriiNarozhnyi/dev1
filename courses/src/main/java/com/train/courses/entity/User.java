@@ -1,4 +1,4 @@
-package com.training.springproject.entity;
+package com.train.courses.entity;
 
 import javax.persistence.*;
 import java.util.Set;

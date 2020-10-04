@@ -24,16 +24,14 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@RequestParam String username, Model model) {
-        System.out.println(username);
-        User userFromDb = userRepository.findByUsername(username);
+    public String addUser(User user, Model model) {
+        System.out.println(user.getUsername());
+        User userFromDb = userRepository.findByUsername(user.getUsername());
 
         if (userFromDb != null) {
             model.addAttribute("message", "User already exists!");
             return "registration";
         }
-        User user = new User();
-        user.setUsername(username);
 
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));

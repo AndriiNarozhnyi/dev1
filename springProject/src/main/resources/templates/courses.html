@@ -18,6 +18,7 @@
     <input type="text" name="topic_ukr" placeholder="topic_ukr" />
     <input type="date" name="startDate" placeholder="startDate">
     <input type="date" name="endDate" placeholder="endDate">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
     <button type="submit">Add</button>
 </form>
 <h3> Courses filter </h3>
@@ -29,6 +30,7 @@
 <!--    <input type="date" name="fstartDate" th:placeholder="${fstartDate}">-->
 <!--    <input type="date" name="fduration" th:placeholder="${fduration}">-->
 <!--    <input type="date" name="fendDate" th:placeholder="${fendDate}">-->
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
     <button type="submit">Filter</button>
 </form>
 <table>
