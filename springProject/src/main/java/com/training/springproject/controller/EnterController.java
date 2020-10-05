@@ -2,8 +2,10 @@ package com.training.springproject.controller;
 
 import com.training.springproject.dto.CoursesDTO;
 import com.training.springproject.entity.Course;
+import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,16 +35,15 @@ public class EnterController {
     }
 
     @PostMapping("/courses")
-    public String addCourse(@RequestParam String name, @RequestParam String name_ukr,
+    public String addCourse(
+            @AuthenticationPrincipal User user,
+            @RequestParam String name, @RequestParam String name_ukr,
                             @RequestParam String topic, @RequestParam String topic_ukr,
                             @RequestParam String startDate, @RequestParam String endDate,
                             Model model){
-        System.out.println(startDate);
-        System.out.println(endDate);
-        System.out.println(LocalDate.parse(startDate));
 
     Course course = new Course(name, name_ukr, topic, topic_ukr,
-            LocalDate.parse(startDate), LocalDate.parse(endDate));
+            LocalDate.parse(startDate), LocalDate.parse(endDate), user);
     courseService.saveNewCourse(course);
         CoursesDTO courses = courseService.getAllCourses();
         model.addAttribute("courses", courses);

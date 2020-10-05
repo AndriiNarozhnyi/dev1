@@ -37,7 +37,7 @@
     <thead>
     <tr>
         <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th>
-        <th> startDate </th><th> Duration </th><th> endDate </th>
+        <th> startDate </th><th> Duration </th><th> endDate </th><th> teacher </th>
 
     </tr>
     </thead>
@@ -54,6 +54,7 @@
         <td><span th:text="${course.startDate}"> Name </span></td>
         <td><span th:text="${course.duration}"> Name </span></td>
         <td><span th:text="${course.endDate}"> Name </span></td>
+        <td><span th:text="${course.teacher.username}"> Name </span></td>
 
     </tr>
     </tbody>

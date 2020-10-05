@@ -1,9 +1,6 @@
 package com.training.springproject.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -20,11 +17,15 @@ public class Course {
     private LocalDate startDate;
     private LocalDate endDate;
     private long duration;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private User teacher;
 
     public Course() {
     }
 
-    public Course(String name, String name_ukr, String topic, String topic_ukr, LocalDate startDate, LocalDate endDate) {
+    public Course(String name, String name_ukr, String topic, String topic_ukr,
+                  LocalDate startDate, LocalDate endDate, User teacher) {
         this.name = name;
         this.name_ukr = name_ukr;
         this.topic = topic;
@@ -32,6 +33,16 @@ public class Course {
         this.startDate = startDate;
         this.endDate = endDate;
         this.duration = DAYS.between(startDate, endDate);
+        this.teacher = teacher;
+
+    }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
     }
 
     public Integer getId() {

@@ -7,7 +7,7 @@
 <body>
 <div th:include="fragments/langselector::langselector"></div>
 
-<form th:action="/login" method="post">
+<form th:action="login" method="post">
     <div>  <input type="text" name="username"/><label th:text="#{username}"></label></div>
     <div><input type="password" name="password"/> <label th:text="#{password}"></label></div>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
