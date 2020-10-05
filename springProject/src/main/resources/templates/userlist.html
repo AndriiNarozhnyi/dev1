@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>UserList</title>
+</head>
+<body>
+<h3> List of users</h3>
+<table>
+    <thead>
+    <tr>
+        <th> ID </th><th> Name </th><th> Name-ukr </th><th> email </th><th>active</th><th> Roles </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${userlist.users.empty}">
+        <td colspan="2"> No Users Available </td>
+    </tr>
+    <tr th:each="user : ${userlist.users}">
+        <td><span th:text="${user.id}"> Id</span></td>
+        <td><span th:text="${user.username}"> Name </span></td>
+        <td><span th:text="${user.username_ukr}"> Name </span></td>
+        <td><span th:text="${user.email}"> Name </span></td>
+        <td><span th:text="${user.isActive()}?'YES':'NO'"></span></td>
+        <td><span th:text="${#strings.setJoin(user.roles,',')}"> Name </span></td>
+        <td><a th:href="@{/user/{id}(id=${user.id})}">edit</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</form>
+</body>
+</html>

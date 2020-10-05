@@ -1,5 +1,7 @@
 package com.training.springproject.service;
 
+import com.training.springproject.dto.CoursesDTO;
+import com.training.springproject.dto.UsersDTO;
 import com.training.springproject.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,4 +20,10 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
+    public UsersDTO getAllUsers() {
+        //TODO checking for an empty user list
+        return new UsersDTO(userRepository.findAll());
+    }
+
+
 }
