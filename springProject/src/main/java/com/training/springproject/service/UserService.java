@@ -2,6 +2,7 @@ package com.training.springproject.service;
 
 import com.training.springproject.dto.CoursesDTO;
 import com.training.springproject.dto.UsersDTO;
+import com.training.springproject.entity.Role;
 import com.training.springproject.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,5 +26,8 @@ public class UserService implements UserDetailsService {
         return new UsersDTO(userRepository.findAll());
     }
 
-
+    public UsersDTO getAllTeachers() {
+        UsersDTO udto = new UsersDTO(userRepository.findByRoleTeacher());
+        return udto;
+    }
 }

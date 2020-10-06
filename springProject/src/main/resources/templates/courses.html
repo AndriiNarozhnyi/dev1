@@ -21,6 +21,16 @@
     <input type="text" name="topic_ukr" placeholder="topic_ukr" />
     <input type="date" name="startDate" placeholder="startDate">
     <input type="date" name="endDate" placeholder="endDate">
+
+    <div th:if="${teachers==null or teachers.users.empty}">No active teachers </div>
+    <div th:if="${teachers!=null and !teachers.users.empty}">
+        <select class="form-control" name="userId" id="tl">
+            <option th:each="teacher : ${teachers.users}"
+                th:value="${teacher.id}"
+                th:text="${teacher.username}">
+            </option>
+        </select>
+    </div>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
     <button type="submit">Add</button>
 </form>

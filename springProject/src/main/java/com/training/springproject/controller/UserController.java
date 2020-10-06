@@ -46,6 +46,7 @@ public class UserController {
         user.setUsername(username);
         user.setUsername_ukr(username_ukr);
         user.setEmail(email);
+        System.out.println(form.get("isActive"));
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
@@ -57,7 +58,12 @@ public class UserController {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
-        user.setActive(Boolean.parseBoolean(form.get("isActive")));
+        if(form.get("isActive")!=null){
+            user.setActive(true);
+        } else {
+            user.setActive(false);
+        }
+
         userRepository.save(user);
 
         return "redirect:/user";
