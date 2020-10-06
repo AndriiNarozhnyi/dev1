@@ -6,6 +6,8 @@ import com.training.springproject.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
@@ -29,4 +31,12 @@ public class CourseService {
         }
     }
 
+    public Course findByName(String courseName) {
+       return courseRepository.findByName(courseName);
+    }
+
+    public Optional<Course> findById(Integer courseId) {
+        System.out.println(courseId.getClass());
+        return courseRepository.findById(courseId);
+    }
 }

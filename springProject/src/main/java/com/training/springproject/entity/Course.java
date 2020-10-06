@@ -2,6 +2,8 @@ package com.training.springproject.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
+
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Entity
@@ -9,7 +11,6 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-
     private String name;
     private String name_ukr;
     private String topic;
@@ -17,9 +18,13 @@ public class Course {
     private LocalDate startDate;
     private LocalDate endDate;
     private long duration;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User teacher;
+
+    @OneToMany(mappedBy = "course")
+    Set<CourseTaking> courseTakings;
 
     public Course() {
     }
@@ -103,5 +108,13 @@ public class Course {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    public Set<CourseTaking> getCourseTakings() {
+        return courseTakings;
+    }
+
+    public void setCourseTakings(Set<CourseTaking> courseTakings) {
+        this.courseTakings = courseTakings;
     }
 }

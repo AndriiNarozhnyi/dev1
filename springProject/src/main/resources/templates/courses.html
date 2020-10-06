@@ -49,8 +49,8 @@
 <table>
     <thead>
     <tr>
-        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th>
-        <th> startDate </th><th> Duration </th><th> endDate </th><th> teacher </th>
+        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th><th> startDate </th>
+        <th> Duration </th><th> endDate </th><th> teacher </th><th> Q-ty of students</th><th>Action</th>
 
     </tr>
     </thead>
@@ -68,12 +68,27 @@
         <td><span th:text="${course.duration}"> Name </span></td>
         <td><span th:text="${course.endDate}"> Name </span></td>
         <td><span th:text="${course.teacher.username}"> Name </span></td>
-
+        <td><span th:text="${course.getCourseTakings().size()}"></span></td>
+        <td th:if="${userCourses.contains(course.id)}">
+            <form action="/courses/unenroll" method="post">
+                <input type="hidden" name="courseId" th:value="${course.id}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit">Unenroll</button>
+            </form>
+        </td>
+        <td th:if="${!userCourses.contains(course.id)}">
+            <form action="/courses/enroll" method="post">
+                <input type="hidden" name="courseId" th:value="${course.id}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit">Enroll</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
 
 </form>
+<!--<h3 th:text="${#request.userPrincipal.principal.getUsername()}"></h3>-->
 
 </body>
 </html>

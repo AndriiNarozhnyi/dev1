@@ -23,6 +23,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy="student")
+    Set<CourseTaking> courseTakings;
+
     public Long getId() {
         return id;
     }
@@ -102,5 +105,13 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<CourseTaking> getCourseTakings() {
+        return courseTakings;
+    }
+
+    public void setCourseTakings(Set<CourseTaking> courseTakings) {
+        this.courseTakings = courseTakings;
     }
 }

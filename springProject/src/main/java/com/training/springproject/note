@@ -1,0 +1,21 @@
+<td th:if="${userCourses.contains(course.id)}">
+            <form th:action="/courses/Unenroll" method="post">
+                <input type="hidden" name="courseId" th:value="${course.id}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit">Unenroll</button>
+            </form>
+        </td>
+        <td th:if="${!userCourses.contains(course.id)}">
+            <form th:action="/courses/Enroll" method="post">
+                <input type="hidden" name="courseId" th:value="${course.id}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit">Enroll</button>
+            </form>
+        </td>
+
+        <td th:if="${userCourses.contains(course.id)}">
+                    <a th:href="@{/courses/unenroll/{id}(id=${course.id})}">Unenroll</a>
+                </td>
+                <td th:if="${!userCourses.contains(course.id)}">
+                    <a th:href="@{/courses/enroll/{id}(id=${course.id})}">Enroll</a>
+                </td>
