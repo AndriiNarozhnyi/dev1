@@ -23,8 +23,9 @@ public class Course {
     @JoinColumn(name="user_id")
     private User teacher;
 
-    @OneToMany(mappedBy = "course")
-    Set<CourseTaking> courseTakings;
+    @ManyToMany(mappedBy = "takenCourses")
+    Set<User> enrolledStudents;
+
 
     public Course() {
     }
@@ -108,13 +109,5 @@ public class Course {
 
     public void setDuration(long duration) {
         this.duration = duration;
-    }
-
-    public Set<CourseTaking> getCourseTakings() {
-        return courseTakings;
-    }
-
-    public void setCourseTakings(Set<CourseTaking> courseTakings) {
-        this.courseTakings = courseTakings;
     }
 }

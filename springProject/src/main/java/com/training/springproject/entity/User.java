@@ -23,8 +23,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy="student")
-    Set<CourseTaking> courseTakings;
+    @ManyToMany
+    @JoinTable(name="course_taken",
+    joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="course_id"))
+    Set<Course> takenCourses;
 
     public Long getId() {
         return id;
@@ -107,11 +110,5 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public Set<CourseTaking> getCourseTakings() {
-        return courseTakings;
-    }
 
-    public void setCourseTakings(Set<CourseTaking> courseTakings) {
-        this.courseTakings = courseTakings;
-    }
 }

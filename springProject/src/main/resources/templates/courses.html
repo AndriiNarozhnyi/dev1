@@ -68,7 +68,7 @@
         <td><span th:text="${course.duration}"> Name </span></td>
         <td><span th:text="${course.endDate}"> Name </span></td>
         <td><span th:text="${course.teacher.username}"> Name </span></td>
-        <td><span th:text="${course.getCourseTakings().size()}"></span></td>
+        <td><span th:</td>
         <td th:if="${userCourses.contains(course.id)}">
             <form action="/courses/unenroll" method="post">
                 <input type="hidden" name="courseId" th:value="${course.id}">
