@@ -5,16 +5,17 @@
     <title th:text="#{registration}"></title>
 </head>
 <body>
-<div th:include="fragments/langselector::langselector"></div>
+
+<div><span th:text="${message_pres}?${message_pres}:''"></span></div>
+<div><span th:text="${emailIncorrect}?${emailIncorrect}:''"></span></div>
 <form action="/registration" method="post">
-    <input type="text" name="username" placeholder="username" />
+    <input type="text" name="username" th:value="${put_name}?${put_name}:''"placeholder="username" />
     <input type="text" name="username_ukr" placeholder="username_ukr">
-    <input type="text" name="email" placeholder="email">
+    <input type="text" name="email" th:value="${put_email}?${put_email}:''" placeholder="email">
     <input type="password" name="password" placeholder="password" />
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
     <button type="submit">Add</button>
 </form>
-<!--<p th:text="${message}?:''"></p>-->
 
 </body>
 </html>

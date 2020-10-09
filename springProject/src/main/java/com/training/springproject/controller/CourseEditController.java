@@ -6,14 +6,19 @@ import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 
 @Controller
+@PreAuthorize("hasAuthority('ADMIN')")
+@RequestMapping("/admin")
 public class CourseEditController {
     private final CourseService courseService;
     private final UserService userService;
@@ -21,6 +26,15 @@ public class CourseEditController {
     public CourseEditController(CourseService courseService, UserService userService) {
         this.courseService = courseService;
         this.userService = userService;
+    }
+    @GetMapping("/courses")
+    public String addCourse(Model model){
+        CoursesDTO courses = courseService.getAllCourses();
+        model.addAttribute("courses", courses);
+        UsersDTO teachers = userService.getAllTeachers();
+        model.addAttribute("teachers", teachers);
+        return "AdminCourse";
+
     }
 
     @PostMapping("/courses")
@@ -38,7 +52,7 @@ public class CourseEditController {
         model.addAttribute("courses", courses);
         UsersDTO teachers = userService.getAllTeachers();
         model.addAttribute("teachers", teachers);
-        return "courses";
+        return "AdminCourse";
 
     }
 }

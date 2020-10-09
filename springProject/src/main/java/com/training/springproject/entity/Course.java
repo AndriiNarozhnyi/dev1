@@ -1,7 +1,10 @@
 package com.training.springproject.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -9,12 +12,13 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Entity
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotBlank(message = "Course name cannot be empty")
     private String name;
-    private String name_ukr;
+    private String nameukr;
     private String topic;
-    private String topic_ukr;
+    private String topicukr;
     private LocalDate startDate;
     private LocalDate endDate;
     private long duration;
@@ -23,19 +27,28 @@ public class Course {
     @JoinColumn(name="user_id")
     private User teacher;
 
-    @ManyToMany(mappedBy = "takenCourses")
-    Set<User> enrolledStudents;
+    @ManyToMany(fetch = FetchType.EAGER)
+            @JoinTable(name = "course_taken", joinColumns = @JoinColumn(name="course_id")
+            ,inverseJoinColumns = @JoinColumn(name = "user_id"))
+    Set<User> enrolledStudents = new HashSet<>();
 
+    public Set<User> getEnrolledStudents() {
+        return enrolledStudents;
+    }
+
+    public void setEnrolledStudents(Set<User> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
 
     public Course() {
     }
 
-    public Course(String name, String name_ukr, String topic, String topic_ukr,
+    public Course(String name, String nameukr, String topic, String topicukr,
                   LocalDate startDate, LocalDate endDate, User teacher) {
         this.name = name;
-        this.name_ukr = name_ukr;
+        this.nameukr = nameukr;
         this.topic = topic;
-        this.topic_ukr = topic_ukr;
+        this.topicukr = topicukr;
         this.startDate = startDate;
         this.endDate = endDate;
         this.duration = DAYS.between(startDate, endDate);
@@ -63,12 +76,12 @@ public class Course {
         this.name = name;
     }
 
-    public String getName_ukr() {
-        return name_ukr;
+    public String getNameukr() {
+        return nameukr;
     }
 
-    public void setName_ukr(String name_ukr) {
-        this.name_ukr = name_ukr;
+    public void setNameukr(String name_ukr) {
+        this.nameukr = name_ukr;
     }
 
     public String getTopic() {
@@ -79,12 +92,12 @@ public class Course {
         this.topic = topic;
     }
 
-    public String getTopic_ukr() {
-        return topic_ukr;
+    public String getTopicukr() {
+        return topicukr;
     }
 
-    public void setTopic_ukr(String topic_ukr) {
-        this.topic_ukr = topic_ukr;
+    public void setTopicukr(String topic_ukr) {
+        this.topicukr = topic_ukr;
     }
 
     public LocalDate getStartDate() {
@@ -109,5 +122,18 @@ public class Course {
 
     public void setDuration(long duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id.equals(course.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -5,6 +5,7 @@ import com.training.springproject.entity.User;
 import com.training.springproject.repository.UserRepository;
 import com.training.springproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
+
 
     @GetMapping
     public String userList(Model model){
@@ -46,7 +48,6 @@ public class UserController {
         user.setUsername(username);
         user.setUsername_ukr(username_ukr);
         user.setEmail(email);
-        System.out.println(form.get("isActive"));
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
