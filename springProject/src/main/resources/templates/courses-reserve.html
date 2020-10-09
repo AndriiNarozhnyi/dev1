@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses list</title>
+</head>
+<body>
+<div th:include="fragments/header1.html::header1"></div>
+
+<h3> Courses filter </h3>
+<div class="full-width-div">
+<div class="container container expand-lg">
+    <div class="col">
+    <table>
+    <thead>
+    <tr>
+        <th>Name</th><th>Name-ukr</th><th>Topic</th><th>Topic_ukr</th><th>startDate</th>
+        <th>Duration min</th><th>Duration max</th><th>endDate</th><th>teacher</th>
+
+    </tr>
+    </thead>
+    <tbody>
+<form action="/course_filter" method="get">
+    <td><input type="text" name="fname" th:value="${fname}?:''" /></td>
+    <td><input type="text" name="fnameukr" th:value="${fnameukr}?:''" /></td>
+    <td><input type="text" name="ftopic" th:value="${ftopic}?:''" /></td>
+    <td><input type="text" name="ftopicukr" th:value="${ftopicukr}?:''" /></td>
+    <td><input type="date" name="fstartDate" th:value="${fstartDate}?:''" /></td>
+    <td><input type="number" min="0" name="fdurationMin" th:value="${fdurationMin}?:''" /></td>
+    <td><input type="number" min="0" name="fdurationMax" th:value="${fdurationMax}?:''" /></td>
+    <td><input type="date" name="fendDate" th:value="${fendDate}?:''" /></td>
+    <td><input type="text" name="fteacher" th:value="${fteacher}?:''" /></td>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+    <button type="submit">Filter</button>
+</form>
+    </tbody>
+</table>
+    </div>
+</div>
+</div>
+
+<h3> Courses list </h3>
+<table>
+    <thead>
+    <tr>
+        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th><th> startDate </th>
+        <th> Duration </th><th> endDate </th><th> teacher </th><th> Q-ty of students</th><th>Action</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${courses.courses.empty}">
+        <td colspan="2"> No Courses Available </td>
+    </tr>
+    <tr th:each="course : ${courses.courses}">
+        <td><span th:text="${course.id}"> Id</span></td>
+        <td><span th:text="${course.name}"> Name </span></td>
+        <td><span th:text="${course.nameukr}"> Name </span></td>
+        <td><span th:text="${course.topic}"> Name </span></td>
+        <td><span th:text="${course.topicukr}"> Name </span></td>
+        <td><span th:text="${course.startDate}"> Name </span></td>
+        <td><span th:text="${course.duration}"> Name </span></td>
+        <td><span th:text="${course.endDate}"> Name </span></td>
+        <td><span th:text="${course.teacher.username}"> Name </span></td>
+        <td><span th:text="${course.getEnrolledStudents().size()}"</td>
+        <td th:if="${!course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
+            <form action="/courses/enroll" method="post">
+                <input type="hidden" name="courseId" th:value="${course.id}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit">Enroll</button>
+            </form>
+        </td>
+        <td th:if="${course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
+            <form action="/courses/unenroll" method="post">
+                <input type="hidden" name="courseId" th:value="${course.id}">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                <button type="submit">Unenroll</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</form>
+<!--<h3 th:text="${#request.userPrincipal.principal.getUsername()}"></h3>-->
+
+<div th:include="fragments/footer::footer"></div>
+</body>
+</html>

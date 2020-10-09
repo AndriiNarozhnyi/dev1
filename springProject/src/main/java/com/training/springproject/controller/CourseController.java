@@ -46,7 +46,6 @@ public class CourseController {
             Model model){
         CoursesDTO courses = courseService.getAllCourses();
         model.addAttribute("courses", courses);
-        model.addAttribute("startDate", LocalDate.now());
         return "courses";
     }
 
@@ -57,7 +56,6 @@ public class CourseController {
         List<Object> result = courseService.findByFiter(form);
         model.addAttribute("courses", result.get(0));
         model.mergeAttributes((Map<String, String>)result.get(1));
-        System.out.println(form.get("fdurationMin"));
 
         return "courses";
     }

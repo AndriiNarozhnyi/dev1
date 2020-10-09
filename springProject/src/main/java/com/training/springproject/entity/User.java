@@ -141,4 +141,8 @@ public class User implements UserDetails, Serializable {
     public int hashCode() {
         return Objects.hash(username);
     }
+
+    public boolean isStudent(){
+        return roles.contains(Role.USER);
+    }
 }

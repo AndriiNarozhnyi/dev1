@@ -64,10 +64,7 @@ public class CourseService {
         List<Object> result = new ArrayList<>();
         Map<String,String> map = new HashMap<>();
         CoursesDTO courses = new CoursesDTO(
-//                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqual(
-                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBefore(
-//                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLike(
-//                courseRepository.findByNameLikeAndNameukrLike(
+                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBeforeAndTeacherUsernameLike(
                 "%"+form.get("fname")+"%",
                 "%"+form.get("fnameukr")+"%",
                 "%"+form.get("ftopic")+"%",
@@ -75,14 +72,22 @@ public class CourseService {
                         LocalDate.parse(form.get("fstartDate")==""?"0002-02-02":form.get("fstartDate")),
                         Long.parseLong(form.get("fdurationMin")==""?"0":form.get("fdurationMin")),
                         Long.parseLong(form.get("fdurationMax")==""?"9999":form.get("fdurationMax")),
-                        LocalDate.parse(form.get("fendDate")==""?"9999-02-02":form.get("fendDate"))
+                        LocalDate.parse(form.get("fendDate")==""?"9999-02-02":form.get("fendDate")),
+                        "%"+form.get("fteacher")+"%"
                 ));
 
         result.add(courses);
+
         map.put("fname", form.get("fname"));
         map.put("fnameukr", form.get("fnameukr"));
         map.put("ftopic", form.get("ftopic"));
         map.put("ftopicukr", form.get("ftopicukr"));
+        map.put("fstartDate", form.get("fstartDate"));
+        map.put("fendDate", form.get("fendDate"));
+        map.put("fdurationMin", form.get("fdurationMin"));
+        map.put("fdurationMax", form.get("fdurationMax"));
+        map.put("fteacher", form.get("fteacher"));
+
         result.add(map);
         return result;
     }

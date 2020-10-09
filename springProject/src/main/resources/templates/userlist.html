@@ -5,10 +5,12 @@
     <title>UserList</title>
 </head>
 <body>
+<div th:include="fragments/header1.html::header1"></div>
+<div class="container">
 <h3> List of users</h3>
 <table>
     <thead>
-    <tr>
+    <tr class="text-center">
         <th> ID </th><th> Name </th><th> Name-ukr </th><th> email </th><th>active</th><th> Roles </th>
     </tr>
     </thead>
@@ -16,7 +18,7 @@
     <tr th:if="${userlist.users.empty}">
         <td colspan="2"> No Users Available </td>
     </tr>
-    <tr th:each="user : ${userlist.users}">
+    <tr class="text-center" th:each="user : ${userlist.users}">
         <td><span th:text="${user.id}"> Id</span></td>
         <td><span th:text="${user.username}"> Name </span></td>
         <td><span th:text="${user.username_ukr}"> Name </span></td>
@@ -29,5 +31,6 @@
 </table>
 
 </form>
+</div>
 </body>
 </html>

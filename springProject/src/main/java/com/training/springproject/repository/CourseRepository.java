@@ -23,4 +23,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBefore(String fname, String fnameukr, String ftopic, String ftopicukr, LocalDate fstartDate, Long fdurationMin, Long fdurationMax, LocalDate fendDate);
 
     List<Course> findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqual(String fname, String fnameukr, String ftopic, String ftopicukr, LocalDate fstartDate, long fdurationMin, long fdurationMax);
+
+    List<Course> findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBeforeAndTeacherUsernameLike(String fname, String fnameukr, String ftopic, String ftopicukr, LocalDate parse, long parseLong, long parseLong1, LocalDate parse1, String fteacher);
 }
