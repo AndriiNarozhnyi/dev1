@@ -1,19 +1,21 @@
 package com.training.springproject.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+@Controller
 public class ControllerUtils {
+
     static Map<String, String> getErrors(BindingResult bindingResult) {
         Collector<FieldError, ?, Map<String, String>> collector = Collectors.toMap(
                 fieldError -> fieldError.getField() + "Error",
@@ -27,18 +29,19 @@ public class ControllerUtils {
                 Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
             Matcher matcher = mailRegex.matcher(email);
-            return matcher.find();
+            return email!=null&&matcher.find();
         }
 
 
     public static boolean checkNameEmpty(String name) {
-        if (name==null||name.isEmpty()){
+        if (name==null||name.length()==0){
             return true;
         }
         return false;
     }
 
     public static List<Object> checkCourseIncorrect(Map<String, String> form) {
+        //TODO - transfer to controller class as I cannot get messageSourse from here
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
@@ -67,7 +70,7 @@ public class ControllerUtils {
             check = false;
         }
         if (LocalDate.parse(form.get("startDate")).isAfter(LocalDate.parse(form.get("endDate")))){
-            answer.put("endDateBeforeStart", "End Date cannot be less then start Date");
+            answer.put("endBeforeStart", "End Date cannot be less then start Date");
             check=false;
         }
         res.add(answer);
@@ -82,4 +85,26 @@ public class ControllerUtils {
         return false;
     }
 
+    public static List checkUserIncorrect(Map<String, String> form, Locale locale) {
+        //TODO - transfer to controller class as I cannot get messageSourse from here
+        List<Object> res = new ArrayList<>();
+        Map<String, String> answer = new HashMap<>();
+        boolean check = true;
+        if (checkNameEmpty(form.get("username"))){
+            answer.put("incusername", "User name cannot be empty");
+            check = false;
+        }
+        if (checkNameEmpty(form.get("usernameukr"))){
+            answer.put("incusernameukr", "User name in Ukrainian cannot be empty");
+            check = false;
+        }
+        if (!emailValid(form.get("email"))){
+            answer.put("emailIncorrect", "emailIncorrect");
+            check=false;
+        }
+        res.add(answer);
+        res.add(check);
+        return res;
+
+    }
 }

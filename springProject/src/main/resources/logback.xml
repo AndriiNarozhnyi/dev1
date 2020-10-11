@@ -33,7 +33,7 @@
     </turboFilter>
     <!-- Логгеры -->
     <!-- Корневой логгер -->
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="sout"/>
         <appender-ref ref="file" />
     </root>

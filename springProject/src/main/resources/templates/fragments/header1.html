@@ -48,7 +48,8 @@
                 <a class="btn btn-success mx-2" href="/login">Login</a>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
-                <form th:action="@{/logout}" method="post">
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                     <input type="submit" class="btn btn-warning mx-2" value="Sign Out"/>
                 </form>
             </div>

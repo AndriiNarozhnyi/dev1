@@ -5,8 +5,8 @@
     <title th:text="#{login}"></title>
 </head>
 <body>
-
-
+<div th:include="fragments/header1.html::header1"></div>
+<div class="container">
 <form th:action="login" method="post">
     <div>  <input type="text" name="username"/><label th:text="#{username}"></label></div>
     <div><input type="password" name="password"/> <label th:text="#{password}"></label></div>
@@ -15,7 +15,7 @@
 </form>
 
 <a href="registration" th:text="#{registration}"></a>
-
+</div>
 </body>
 </html>
 <!--th:text="#{username}"-->

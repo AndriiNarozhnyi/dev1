@@ -7,6 +7,13 @@
 <div th:include="fragments/header1.html::header1"/>
 <div class="container">
     <h3>Create Course</h3>
+    <h1 th:text="${incname}?${incname}:''"></h1>
+    <h1 th:text="${incnameukr}?${incnameukr}:''"></h1>
+    <h1 th:text="${inctopic}?${inctopic}:''"></h1>
+    <h1 th:text="${inctopicukr}?${inctopicukr}:''"></h1>
+    <h1 th:text="${incStartDate}?${incStartDate}:''"></h1>
+    <h1 th:text="${incEndDate}?${incEndDate}:''"></h1>
+    <h1 th:text="${endBeforeStart}?${endBeforeStart}:''"></h1>
     <form action="/admincreate" method="post">
         <div class="container">
             <div class="row justify-content-md-left">
@@ -54,7 +61,7 @@
                     <label>endDate    </label>
                 </div>
                 <div class="col col-lg-3">
-                    <input th:attr="min=${now}" type="date" name="endDate" th:value="${course}?${course.endDate}:''">
+                    <input type="date" name="endDate" th:value="${course}?${course.endDate}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">

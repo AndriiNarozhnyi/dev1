@@ -5,17 +5,54 @@
     <title th:text="#{registration}"></title>
 </head>
 <body>
-
+<div th:include="fragments/header1.html::header1"></div>
+<div class="container">
 <div><span th:text="${message_pres}?${message_pres}:''"></span></div>
 <div><span th:text="${emailIncorrect}?${emailIncorrect}:''"></span></div>
+<div><span th:text="${incusername}?${incusername}:''"></span></div>
+<div><span th:text="${incusernameukr}?${incusernameukr}:''"></span></div>
+    <br>
 <form action="/registration" method="post">
-    <input type="text" name="username" th:value="${put_name}?${put_name}:''"placeholder="username" />
-    <input type="text" name="username_ukr" placeholder="username_ukr">
-    <input type="text" name="email" th:value="${put_email}?${put_email}:''" placeholder="email">
-    <input type="password" name="password" placeholder="password" />
+    <div class="row justify-content-md-left">
+        <div class="col col-lg-2">
+            <label>Username</label>
+        </div>
+        <div class="col col-lg-3">
+            <input type="text" name="username" th:value="${username}?${username}:''"placeholder="username" />
+        </div>
+    </div>
+    <div class="row justify-content-md-left">
+        <div class="col col-lg-2">
+            <label>Username Ukr</label>
+        </div>
+        <div class="col col-lg-3">
+            <input type="text" name="usernameukr" th:value="${usernameukr}?${usernameukr}:''"placeholder="username" />
+        </div>
+    </div>
+    <div class="row justify-content-md-left">
+        <div class="col col-lg-2">
+            <label>Email</label>
+        </div>
+        <div class="col col-lg-3">
+            <input type="text" name="email" th:value="${email}?${email}:''" placeholder="email">
+        </div>
+    </div>
+    <div class="row justify-content-md-left">
+        <div class="col col-lg-2">
+            <label>Password</label>
+        </div>
+        <div class="col col-lg-3">
+            <input type="password" name="password" placeholder="password" />
+        </div>
+    </div>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-    <button type="submit">Add</button>
+    <div class="row justify-content-md-left">
+        <div class="col col-lg-2">
+            <button type="submit">Add</button>
+        </div>
+    </div>
 </form>
+</div>
 
 </body>
 </html>

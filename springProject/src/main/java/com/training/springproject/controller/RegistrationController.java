@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -38,17 +39,20 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Locale locale, Model model) {
+    public String addUser(User user,
+                          @RequestParam Map<String, String> form, Locale locale, Model model) {
+        form.remove("_csrf");
+        List res = ControllerUtils.checkUserIncorrect(form, locale);
+        if(!(boolean)res.get(1)){
+            model.mergeAttributes((Map)res.get(0));
+            return "registration";
+        }
 
             User userFromDb = userService.findUserByUserName(user.getUsername());
             if (userFromDb != null) {
                 model.addAttribute("message_pres", messageSource.getMessage("messageUserPresent", null, locale));
-                model.addAttribute("put_name", user.getUsername());
-                return "registration";
-            }
-            if(!ControllerUtils.emailValid(user.getEmail())){
-                model.addAttribute("emailIncorrect", messageSource.getMessage("emailIncorrect",null,locale));
-                model.addAttribute("put_email", user.getEmail());
+                model.mergeAttributes(form);
+                model.addAttribute("putname", user.getUsername());
                 return "registration";
             }
 
