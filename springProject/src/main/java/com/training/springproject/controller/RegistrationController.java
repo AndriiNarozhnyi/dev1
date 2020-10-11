@@ -42,9 +42,11 @@ public class RegistrationController {
     public String addUser(User user,
                           @RequestParam Map<String, String> form, Locale locale, Model model) {
         form.remove("_csrf");
+        form.remove("password");
         List res = ControllerUtils.checkUserIncorrect(form, locale);
         if(!(boolean)res.get(1)){
             model.mergeAttributes((Map)res.get(0));
+            model.addAllAttributes(form);
             return "registration";
         }
 

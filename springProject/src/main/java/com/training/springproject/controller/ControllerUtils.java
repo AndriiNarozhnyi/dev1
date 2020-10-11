@@ -41,7 +41,7 @@ public class ControllerUtils {
     }
 
     public static List<Object> checkCourseIncorrect(Map<String, String> form) {
-        //TODO - transfer to controller class as I cannot get messageSourse from here
+        //TODO - transfer to controller class o learn how to get messageSourse from here
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
@@ -87,6 +87,7 @@ public class ControllerUtils {
 
     public static List checkUserIncorrect(Map<String, String> form, Locale locale) {
         //TODO - transfer to controller class as I cannot get messageSourse from here
+        //TODO - add password check
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
