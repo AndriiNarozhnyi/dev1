@@ -1,5 +1,8 @@
 package com.training.springproject.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -8,7 +11,11 @@ import java.util.Objects;
 import java.util.Set;
 
 import static java.time.temporal.ChronoUnit.DAYS;
-
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Course {
     @Id
@@ -32,15 +39,13 @@ public class Course {
             ,inverseJoinColumns = @JoinColumn(name = "user_id"))
     Set<User> enrolledStudents = new HashSet<>();
 
+
     public Set<User> getEnrolledStudents() {
         return enrolledStudents;
     }
 
     public void setEnrolledStudents(Set<User> enrolledStudents) {
         this.enrolledStudents = enrolledStudents;
-    }
-
-    public Course() {
     }
 
     public Course(String name, String nameukr, String topic, String topicukr,
@@ -64,66 +69,6 @@ public class Course {
         this.teacher = teacher;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNameukr() {
-        return nameukr;
-    }
-
-    public void setNameukr(String name_ukr) {
-        this.nameukr = name_ukr;
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getTopicukr() {
-        return topicukr;
-    }
-
-    public void setTopicukr(String topic_ukr) {
-        this.topicukr = topic_ukr;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public long getDuration() {
-        return duration;
-    }
-
-    public void setDuration(long duration) {
-        this.duration = duration;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -135,5 +80,33 @@ public class Course {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public boolean isStarted(){
+        return LocalDate.now().isAfter(startDate)&&LocalDate.now().isBefore(endDate);
+    }
+
+    public boolean isFinished(){
+        return LocalDate.now().isAfter(endDate);
+    }
+
+    public boolean isNotStarted(){
+        return LocalDate.now().isBefore(startDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nameukr='" + nameukr + '\'' +
+                ", topic='" + topic + '\'' +
+                ", topicukr='" + topicukr + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", duration=" + duration +
+                ", teacher=" + teacher +
+                ", enrolledStudents=" + enrolledStudents +
+                '}';
     }
 }

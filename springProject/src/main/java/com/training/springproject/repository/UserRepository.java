@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
@@ -19,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "from user u inner join user_role ur on u.id = ur.user_id where ur.roles='TEACHER' and u.active=1"
             , nativeQuery = true)
     List<User> findByRoleTeacher();
+
+    Optional<User> findByIdAndActiveTrue(Long id);
 }

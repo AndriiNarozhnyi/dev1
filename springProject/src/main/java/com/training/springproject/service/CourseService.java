@@ -3,68 +3,74 @@ package com.training.springproject.service;
 import com.training.springproject.dto.CoursesDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
+import com.training.springproject.exceptions.CourseNotFoundException;
+import com.training.springproject.exceptions.NoSuchActiveUserException;
 import com.training.springproject.repository.CourseRepository;
+import com.training.springproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Service
 public class CourseService {
+    private final UserRepository userRepository;
     private final CourseRepository courseRepository;
+    static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
 
     @Autowired
-    public CourseService(CourseRepository courseRepository){
+    public CourseService(CourseRepository courseRepository, UserRepository userRepository){
         this.courseRepository = courseRepository;
+        this.userRepository = userRepository;
     }
 
     public CoursesDTO getAllCourses() {
-        //TODO checking for an empty course list
         return new CoursesDTO(courseRepository.findAll());
     }
-    public CoursesDTO findByNameLike(String fname){
-        return new CoursesDTO(courseRepository.findByNameLike("%"+fname+"%"));
-    }
+
     public void saveNewCourse(Course course){
+        logger.info("new course created " + course.toString());
         try {
         courseRepository.save(course);
         } catch (Exception ex){
         }
     }
 
-    public Course findByName(String courseName) {
-       return courseRepository.findByName(courseName);
-    }
-
     public Optional<Course> findById(Integer courseId) {
-        System.out.println(courseId.getClass());
         return courseRepository.findById(courseId);
     }
 
-    public void updateCourse(Course course) {
+    public boolean updateCourse(Course course) {
         courseRepository.save(course);
+        logger.info("course updated " + course.toString());
+        return true;
     }
 
-    public void enrollUser(Integer courseId, User user) {
+    public boolean enrollUser(Integer courseId, User user) {
         Course course = findById(courseId).get();
         course.getEnrolledStudents().add(user);
         updateCourse(course);
         //TODO - change to native Query
+        return true;
     }
 
-    public void unenrollUser(Integer courseId, User user) {
+    public boolean unenrollUser(Integer courseId, User user) {
         Course course = findById(courseId).get();
         course.getEnrolledStudents().remove(user);
         updateCourse(course);
         //TODO - change to native Query
+        return true;
     }
 
     public List<Object> findByFiter(Map<String, String> form) {
         List<Object> result = new ArrayList<>();
         Map<String,String> map = new HashMap<>();
         CoursesDTO courses = new CoursesDTO(
-                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBeforeAndTeacherUsernameLike(
+                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBeforeAndTeacherUsernameLikeOrderByStartDateAsc(
                 "%"+form.get("fname")+"%",
                 "%"+form.get("fnameukr")+"%",
                 "%"+form.get("ftopic")+"%",
@@ -91,19 +97,41 @@ public class CourseService {
         result.add(map);
         return result;
     }
-    public List<Object> findByFiterTest(Map<String, String> form) {
-        List<Object> result = new ArrayList<>();
-        Map<String,String> map = new HashMap<>();
-        CoursesDTO courses = new CoursesDTO(
-                courseRepository.findByStartDateAfter(
 
-                        LocalDate.parse((form.get("fstartDate")==""?"0001-01-01":form.get("fstartDate"))
+    public boolean editCourse(Integer courseId, Map<String, String> form) throws Exception {
+        Course course = findById(courseId).orElseThrow(()->new CourseNotFoundException("course was deleted, apply to admin for logs"));
+        course.setName(form.get("name"));
+        course.setNameukr(form.get("nameukr"));
+        course.setTopic(form.get("topic"));
+        course.setTopicukr(form.get("topicukr"));
+        course.setStartDate(LocalDate.parse(form.get("startDate")));
+        course.setEndDate(LocalDate.parse(form.get("endDate")));
+        course.setDuration(DAYS.between(LocalDate.parse(form.get("startDate")), LocalDate.parse(form.get("endDate"))));
 
-                )));
+        return saveEditedCourse(course, form);
 
-        result.add(courses);
-        map.put("fstartDate", form.get("fstartDate"));
-        result.add(map);
-        return result;
+    }
+@Transactional // I think here it may not be necessary
+boolean saveEditedCourse(Course course, Map<String, String> form) throws Exception {
+        if (!form.get("newTeacherId").equals("0")){
+            User newTeacher = userRepository.findByIdAndActiveTrue(Long.parseLong(form.get("newTeacherId")))
+                    .orElseThrow(()->new NoSuchActiveUserException("No active teacher by this id"));
+
+            if(newTeacher.isTeacher()){
+                course.setTeacher(newTeacher);
+            } else {
+                throw new NoSuchActiveUserException("No active teacher by this id");
+            }
+        }
+        courseRepository.save(course);
+    return true;
+    }
+
+    public boolean checkNameDateTeacher(String name, String startDate, User user) {
+        if(courseRepository.findByNameAndStartDateAndTeacherUsername(name,
+                LocalDate.parse(startDate), user.getUsername()).isPresent()){
+            return true;
+        }
+        return false;
     }
 }

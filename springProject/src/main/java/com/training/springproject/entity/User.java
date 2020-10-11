@@ -125,6 +125,10 @@ public class User implements UserDetails, Serializable {
         return roles.contains(Role.ADMIN);
     }
 
+    public boolean isTeacher() {
+        return roles.contains(Role.TEACHER);
+    }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
@@ -144,5 +148,19 @@ public class User implements UserDetails, Serializable {
 
     public boolean isStudent(){
         return roles.contains(Role.USER);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", username_ukr='" + username_ukr + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", roles=" + roles +
+                ", takenCourses=" + takenCourses +
+                '}';
     }
 }

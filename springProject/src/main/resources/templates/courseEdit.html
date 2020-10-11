@@ -7,49 +7,88 @@
 <body>
 <div th:include="fragments/header1.html::header1"></div>
 <div class="container">
-    <form action="/course" method="post">
-        <div class="form-group">
-        <label>Name       </label>
-            <input type="text" name="name" th:value="${course.name}">
-        </div>
-        <div class="form-group">
-        <label>Nameukr    </label>
-            <input type="text" name="name" th:value="${course.nameukr}">
-        </div>
-        <div class="form-group">
-        <label>Topic      </label>
-            <input type="text" name="name" th:value="${course.topic}">
-        </div>
-        <div class="form-group">
-        <label>Topicukr   </label>
-            <input type="text" name="name" th:value="${course.topicukr}">
-        </div>
-        <div class="form-group">
-        <label>startDate  </label>
-            <input type="date" name="name" th:value="${course.startDate}">
-        </div>
-        <div class="form-group">
-        <label>endDate    </label>
-            <input type="date" name="name" th:value="${course.endDate}">
-        </div>
-        <div class="form-group">
-        <label>Teacher    </label>
-            <span th:text="${course.teacher.username}"></span><br>
-        </div>
-        <div class="form-group">
-        <Label>Select Teacher</Label>
-            <select class="form-control" name="teacherId" id="ti">
-                    <option value="0">ALL</option>
-                    <option th:each="teacher : ${teachers.users}"
-                            th:value="${teacher.id}"
-                            th:text="${teacher.username}">
-                    </option>
-                </select>
-        </div>
+    <form action="/adminupdate" method="post">
+        <div class="container">
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>Name</label>
+                </div>
+                <div class="col col-lg-3">
+                    <input type="text" name="name" th:value="${course.name}">
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>Nameukr    </label>
+                </div>
+                <div class="col col-lg-3">
+                    <input type="text" name="nameukr" th:value="${course.nameukr}">
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>Topic      </label>
+                </div>
+                <div class="col col-lg-3">
+                    <input type="text" name="topic" th:value="${course.topic}">
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>Topicukr   </label>
+                </div>
+                <div class="col col-lg-3">
+                    <input type="text" name="topicukr" th:value="${course.topicukr}">
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>startDate  </label>
+                </div>
+                <div class="col col-lg-3">
+                    <input th:readonly="${course.isStarted()}" type="date" name="startDate" th:value="${course.startDate}">
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>endDate    </label>
+                </div>
+                <div class="col col-lg-3">
+                    <input type="date" name="endDate" th:value="${course.endDate}">
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <label>Teacher    </label>
+                </div>
+                <div class="col col-lg-3">
+                    <span name="teacherId" th:value="${course.teacher.id}" th:text="${course.teacher.username}"></span>
+                </div>
+            </div>
+            <div class="row justify-content-md-left">
+                <div class="col col-lg-2">
+                    <Label>Select Teacher</Label>
+                </div>
+                <div class="col col-lg-2">
+                    <select class="form-control" name="newTeacherId" id="ti">
+                        <option value="0"></option>
+                        <option th:each="teacher : ${teachers.users}"
+                                th:value="${teacher.id}"
+                                th:text="${teacher.username}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
         <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-        <div class="form-group">
-        <button class="btn btn-secondary" type="submit">Update</button>
+        <input type="hidden" name="courseId" th:value="${course.id}" />
+        <div class="row justify-content-md-left">
+            <div class="col col-lg-2">
+                <button class="btn btn-secondary" type="submit">Update</button>
+            </div>
         </div>
+        </div>
+
     </form>
 </div>
 </body>

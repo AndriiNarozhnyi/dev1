@@ -17,9 +17,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
+@RequestMapping("/adminupdate")
 public class CourseEditController {
+    static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
     private final CourseService courseService;
     private final UserService userService;
 
@@ -27,40 +31,24 @@ public class CourseEditController {
         this.courseService = courseService;
         this.userService = userService;
     }
-    @GetMapping("/admin/courses")
-    public String addCourse(Model model){
-        CoursesDTO courses = courseService.getAllCourses();
-        model.addAttribute("courses", courses);
-        UsersDTO teachers = userService.getAllTeachers();
-        model.addAttribute("teachers", teachers);
 
-        return "AdminCourse";
-    }
-
-    @GetMapping("/admin/{id}")
-    public String userEditForm(@PathVariable Integer id, Model model){
+    @GetMapping("/{id}")
+    public String courseEditForm(@PathVariable Integer id, Model model){
         Course course = courseService.findById(id).get();
         model.addAttribute("course", course);
         UsersDTO teachers = userService.getAllTeachers();
         model.addAttribute("teachers", teachers);
     return "courseEdit";
     }
-    @PostMapping("/admin/courses")
-    public String addCourse(
-            @RequestParam String name, @RequestParam String name_ukr,
-            @RequestParam String topic, @RequestParam String topic_ukr,
-            @RequestParam String startDate, @RequestParam String endDate,
-            @RequestParam ("userId") User user,
-            Model model){
 
-        Course course = new Course(name, name_ukr, topic, topic_ukr,
-                LocalDate.parse(startDate), LocalDate.parse(endDate), user);
-        courseService.saveNewCourse(course);
-        CoursesDTO courses = courseService.getAllCourses();
-        model.addAttribute("courses", courses);
-        UsersDTO teachers = userService.getAllTeachers();
-        model.addAttribute("teachers", teachers);
-        return "courses";
+        @PostMapping
+        public String updateCourse(
+                //is it ok to get course like that or it is better to make whole update by native query "update"?
+                @RequestParam Integer courseId,
+                @RequestParam Map<String, String> form, Model model) throws Exception {
+        courseService.editCourse(courseId, form);
+        return "redirect:/courses";
+        }
 
-    }
+
 }

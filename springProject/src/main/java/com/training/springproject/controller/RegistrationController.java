@@ -23,6 +23,7 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
+    org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -53,7 +54,9 @@ public class RegistrationController {
 
             user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
+
             userRepository.save(user);
+            logger.info("new User " + user.toString()+ " registered");
 
             return "redirect:/login";
 

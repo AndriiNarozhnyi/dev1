@@ -31,7 +31,7 @@
             </div>
             <div th:if="${#request.userPrincipal}!=null">
             <li class="nav-item" th:if="${#request.userPrincipal.principal.isAdmin()}">
-                <a class="nav-link" href="/admin/courses">CoursesCreate</a>
+                <a class="nav-link" href="/admincreate">CoursesCreate</a>
             </li>
             </div>
             <div th:if="${#request.userPrincipal}!=null">

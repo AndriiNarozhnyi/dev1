@@ -49,7 +49,7 @@
 <table>
     <thead>
     <tr class="text-center">
-        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th><th> startDate </th>
+        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th><th>startDate</th>
         <th> Duration </th><th> endDate </th><th> teacher </th><th> Q-ty of students</th><th>Action</th>
 
     </tr>
@@ -64,27 +64,34 @@
         <td class="text-center"><span th:text="${course.nameukr}"> Name </span></td>
         <td class="text-center"><span th:text="${course.topic}"> Name </span></td>
         <td class="text-center"><span th:text="${course.topicukr}"> Name </span></td>
-        <td class="text-center"><span th:text="${course.startDate}"> Name </span></td>
+        <td class="text-center"><span name="startDate" th:text="${#temporals.format(course.startDate, 'dd-MM-yyyy')}"> Name </span></td>
         <td class="text-center"><span th:text="${course.duration}"> Name </span></td>
-        <td class="text-center"><span th:text="${course.endDate}"> Name </span></td>
+        <td class="text-center"><span th:text="${#temporals.format(course.endDate, 'dd-MM-yyyy')}"> Name </span></td>
         <td class="text-center"><span th:text="${course.teacher.username}"> Name </span></td>
         <td class="text-center"><span th:text="${course.getEnrolledStudents().size()}"</td>
         <td class="text-center" th:if="${!course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
-            <form action="/courses/enroll" method="post">
-                <input type="hidden" name="courseId" th:value="${course.id}">
-                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                <button class="btn btn-success" type="submit">Enroll</button>
+            <div th:if="${course.isNotStarted()}">
+                <form action="/courses/enroll" method="post">
+                    <input type="hidden" name="courseId" th:value="${course.id}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <button class="btn btn-success" type="submit">Enroll</button>
             </form>
+            </div>
         </td>
         <td class="text-center" th:if="${course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
+            <div th:if="${course.isNotStarted()}">
             <form action="/courses/unenroll" method="post">
                 <input type="hidden" name="courseId" th:value="${course.id}">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                 <button class="btn btn-warning" type="submit">Unenroll</button>
             </form>
+            </div>
         </td>
+
         <td th:if="${#request.userPrincipal.principal.isAdmin()}">
-            <a class="btn btn-dark mx-2" th:href="@{/admin/{id}(id=${course.id})}">Edit</a>
+            <div th:if="${!course.isFinished()}">
+            <a class="btn btn-dark mx-2" th:href="@{/adminupdate/{id}(id=${course.id})}">Edit</a>
+            </div>
         </td>
     </tr>
     </tbody>

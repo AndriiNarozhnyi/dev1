@@ -42,8 +42,8 @@ public class CourseController {
     }
 
     @GetMapping("/courses")
-    public String showCourses(@AuthenticationPrincipal User user,
-            Model model){
+    public String showCourses (@AuthenticationPrincipal User user,
+            Model model) throws Exception{
         CoursesDTO courses = courseService.getAllCourses();
         model.addAttribute("courses", courses);
         return "courses";

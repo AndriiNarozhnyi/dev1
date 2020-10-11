@@ -5,6 +5,7 @@ import com.training.springproject.dto.UserDTO;
 import com.training.springproject.dto.UsersDTO;
 import com.training.springproject.entity.Role;
 import com.training.springproject.entity.User;
+import com.training.springproject.exceptions.NoSuchActiveUserException;
 import com.training.springproject.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,5 +39,10 @@ public class UserService implements UserDetailsService {
 
     public void update(User user) {
         userRepository.save(user);
+    }
+
+    public User findbyId(Long teacherId) {
+        return userRepository.findByIdAndActiveTrue(teacherId).orElseThrow(
+                ()-> new NoSuchActiveUserException ("No such active teacher"));
     }
 }
