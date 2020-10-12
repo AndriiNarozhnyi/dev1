@@ -6,6 +6,7 @@ import com.training.springproject.dto.UsersDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.Role;
 import com.training.springproject.entity.User;
+import com.training.springproject.exceptions.NoSuchCourseException;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +47,21 @@ public class CourseEditController {
                 //is it ok to get course like that or it is better to make whole update by native query "update"?
                 @RequestParam Integer courseId,
                 @RequestParam Map<String, String> form, Model model) throws Exception {
+        form.remove("_csrf");
+            List res = ControllerUtils.checkCourseEditIncorrect(
+                    form, courseService.findById(courseId).orElseThrow(
+                            ()->new NoSuchCourseException("Course does not exist")));
+
+            if(!(boolean)res.get(1)){
+                model.mergeAttributes((Map)res.get(0));
+                Course course = courseService.findById(courseId).get();
+                model.addAttribute("course", course);
+                UsersDTO teachers = userService.getAllTeachers();
+                model.addAttribute("teachers", teachers);
+                return "courseEdit";
+            }
+
+
         courseService.editCourse(courseId, form);
         return "redirect:/courses";
         }

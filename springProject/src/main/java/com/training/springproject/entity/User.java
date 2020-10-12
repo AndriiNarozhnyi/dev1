@@ -160,7 +160,6 @@ public class User implements UserDetails, Serializable {
                 ", password='" + password + '\'' +
                 ", active=" + active +
                 ", roles=" + roles +
-                ", takenCourses=" + takenCourses +
                 '}';
     }
 }

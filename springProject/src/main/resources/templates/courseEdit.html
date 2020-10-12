@@ -7,6 +7,13 @@
 <body>
 <div th:include="fragments/header1.html::header1"></div>
 <div class="container">
+    <h4 th:text="${incname}?${incname}:''"></h4>
+    <h4 th:text="${incnameukr}?${incnameukr}:''"></h4>
+    <h4 th:text="${inctopic}?${inctopic}:''"></h4>
+    <h4 th:text="${inctopicukr}?${inctopicukr}:''"></h4>
+    <h4 th:text="${incStartDate}?${incStartDate}:''"></h4>
+    <h4 th:text="${incEndDate}?${incEndDate}:''"></h4>
+    <h4 th:text="${endBeforeStart}?${endBeforeStart}:''"></h4>
     <form action="/adminupdate" method="post">
         <div class="container">
             <div class="row justify-content-md-left">

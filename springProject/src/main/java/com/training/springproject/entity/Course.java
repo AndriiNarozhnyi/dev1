@@ -106,7 +106,6 @@ public class Course {
                 ", endDate=" + endDate +
                 ", duration=" + duration +
                 ", teacher=" + teacher +
-                ", enrolledStudents=" + enrolledStudents +
                 '}';
     }
 }

@@ -104,8 +104,8 @@ public class CourseService {
         course.setNameukr(form.get("nameukr"));
         course.setTopic(form.get("topic"));
         course.setTopicukr(form.get("topicukr"));
-        course.setStartDate(LocalDate.parse(form.get("startDate")));
-        course.setEndDate(LocalDate.parse(form.get("endDate")));
+        course.setStartDate(LocalDate.parse(form.get("startDate")).plusDays(1));
+        course.setEndDate(LocalDate.parse(form.get("endDate")).plusDays(1));
         course.setDuration(DAYS.between(LocalDate.parse(form.get("startDate")), LocalDate.parse(form.get("endDate"))));
 
         return saveEditedCourse(course, form);

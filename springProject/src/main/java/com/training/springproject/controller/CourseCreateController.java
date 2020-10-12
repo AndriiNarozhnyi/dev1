@@ -39,19 +39,13 @@ public class CourseCreateController {
     public String addCourse(
             @RequestParam Map<String, String> form,
             Model model) {
-        {
-            
-            model.addAttribute("name", form.get("name"));
-            model.addAttribute("nameukr", form.get("nameukr"));
-            model.addAttribute("topic", form.get("topic"));
-            model.addAttribute("topicukr", form.get("topicukr"));
-            model.addAttribute("startDate", form.get("startDate"));
-            model.addAttribute("startDate", form.get("endDate"));
+        form.remove("_csrf");
+            model.mergeAttributes(form);
             UsersDTO teachers = userService.getAllTeachers();
             model.addAttribute("teachers", teachers);
-        }
+
         List res = ControllerUtils.checkCourseIncorrect(form);
-        if((boolean)res.get(1)){
+        if(!(boolean)res.get(1)){
             model.mergeAttributes((Map)res.get(0));
             return "AdminCourse";
         }
@@ -59,7 +53,7 @@ public class CourseCreateController {
         User teacher = userService.findbyId(Long.parseLong(form.get("teacherId")));
         if(courseService.checkNameDateTeacher(form.get("name"), form.get("startDate"), teacher)){
             model.addAttribute("CourseNameDateTeacherPresent", "Course with such name teacher and start date already exists!");
-
+            model.mergeAttributes((Map)res.get(0));
             return "AdminCourse";
         }
 
