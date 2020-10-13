@@ -7,13 +7,13 @@
 <div th:include="fragments/header1.html::header1"/>
 <div class="container">
     <h3>Create Course</h3>
-    <h4 th:text="${incname}?${incname}:''"></h4>
-    <h4 th:text="${incnameukr}?${incnameukr}:''"></h4>
-    <h4 th:text="${inctopic}?${inctopic}:''"></h4>
-    <h4 th:text="${inctopicukr}?${inctopicukr}:''"></h4>
-    <h4 th:text="${incStartDate}?${incStartDate}:''"></h4>
-    <h4 th:text="${incEndDate}?${incEndDate}:''"></h4>
-    <h4 th:text="${endBeforeStart}?${endBeforeStart}:''"></h4>
+    <h5 th:text="${incname}?${incname}:''"></h5>
+    <h5 th:text="${incnameukr}?${incnameukr}:''"></h5>
+    <h5 th:text="${inctopic}?${inctopic}:''"></h5>
+    <h5 th:text="${inctopicukr}?${inctopicukr}:''"></h5>
+    <h5 th:text="${incStartDate}?${incStartDate}:''"></h5>
+    <h5 th:text="${incEndDate}?${incEndDate}:''"></h5>
+    <h5 th:text="${endBeforeStart}?${endBeforeStart}:''"></h5>
     <form action="/admincreate" method="post">
         <div class="container">
             <div class="row justify-content-md-left">
@@ -21,7 +21,7 @@
                     <label>Name</label>
                 </div>
                 <div class="col col-lg-3">
-                    <input type="text" name="name" th:value="${course}?${course.name}:''">
+                    <input type="text" name="name" th:value="${name}?${name}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">
@@ -29,7 +29,7 @@
                     <label>Nameukr    </label>
                 </div>
                 <div class="col col-lg-3">
-                    <input type="text" name="nameukr" th:value="${course}?${course.nameukr}:''">
+                    <input type="text" name="nameukr" th:value="${nameukr}?${nameukr}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">
@@ -37,7 +37,7 @@
                     <label>Topic      </label>
                 </div>
                 <div class="col col-lg-3">
-                    <input type="text" name="topic" th:value="${course}?${course.topic}:''">
+                    <input type="text" name="topic" th:value="${topic}?${topic}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">
@@ -45,7 +45,7 @@
                     <label>Topicukr   </label>
                 </div>
                 <div class="col col-lg-3">
-                    <input type="text" name="topicukr" th:value="${course}?${course.topicukr}:''">
+                    <input type="text" name="topicukr" th:value="${topicukr}?${topicukr}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">
@@ -53,7 +53,7 @@
                     <label>startDate  </label>
                 </div>
                 <div class="col col-lg-3">
-                    <input type="date" name="startDate" th:value="${course}?${course.startDate}:''">
+                    <input type="date" name="startDate" th:value="${startDate}?${startDate}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">
@@ -61,7 +61,7 @@
                     <label>endDate    </label>
                 </div>
                 <div class="col col-lg-3">
-                    <input type="date" name="endDate" th:value="${course}?${course.endDate}:''">
+                    <input type="date" name="endDate" th:value="${endDate}?${endDate}:''">
                 </div>
             </div>
             <div class="row justify-content-md-left">

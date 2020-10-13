@@ -10,6 +10,8 @@ import com.training.springproject.service.UserService;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +46,8 @@ public class CourseController {
 
     @GetMapping("/courses")
     public String showCourses (@AuthenticationPrincipal User user,
+                               @PageableDefault(sort = {"name"},
+                                       direction = Sort.Direction.ASC) Pageable pageable,
             Model model) throws Exception{
         CoursesDTO courses = courseService.getAllCourses();
         model.addAttribute("courses", courses);

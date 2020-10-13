@@ -8,6 +8,29 @@
 <div th:include="fragments/header1.html::header1"></div>
 <div class="container">
 <h3> List of users</h3>
+    <form action="/user/filter" method="get">
+        <div class="row justify-content-md-left">
+            <div class="col col-lg-1">
+                <label>Username</label>
+            </div>
+            <div class="col col-lg-2">
+                <input type="text" name="fusername" th:value="${fusername}?${fusername}:''">
+            </div>
+            <div class="col col-lg-1">
+                <label>Usernameukr</label>
+            </div>
+            <div class="col col-lg-2">
+                <input type="text" name="fusernameukr" th:value="${fusernameukr}?${fusernameukr}:''">
+            </div>
+            <div class="col col-lg-1">
+                <button class="btn btn-primary" type="submit">Filter</button>
+            </div>
+            <div class="col col-lg-2">
+            <a href="/user" class="btn btn-warning">Reset filter</a>
+            </div>
+        </div>
+    </form>
+    <div th:include="fragments/pager::pager"></div>
 <table>
     <thead>
     <tr class="text-center">
@@ -15,13 +38,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${userlist.users.empty}">
+    <tr th:if="${page.empty}">
         <td colspan="2"> No Users Available </td>
     </tr>
-    <tr class="text-center" th:each="user : ${userlist.users}">
+    <tr class="text-center" th:each="user : ${page}">
         <td><span th:text="${user.id}"> Id</span></td>
         <td><span th:text="${user.username}"> Name </span></td>
-        <td><span th:text="${user.username_ukr}"> Name </span></td>
+        <td><span th:text="${user.usernameukr}"> Name </span></td>
         <td><span th:text="${user.email}"> Name </span></td>
         <td><span th:text="${user.isActive()}?'YES':'NO'"></span></td>
         <td><span th:text="${#strings.setJoin(user.roles,',')}"> Name </span></td>
@@ -29,8 +52,8 @@
     </tr>
     </tbody>
 </table>
-
 </form>
+    <div th:include="fragments/pager::pager"></div>
 </div>
 </body>
 </html>

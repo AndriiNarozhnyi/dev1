@@ -1,23 +1,17 @@
 package com.training.springproject.controller;
 
 
-import com.training.springproject.dto.UserDTO;
-import com.training.springproject.entity.Role;
 import com.training.springproject.entity.User;
 import com.training.springproject.repository.UserRepository;
 import com.training.springproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -43,7 +37,6 @@ public class RegistrationController {
                           @RequestParam Map<String, String> form, Locale locale, Model model) {
         form.remove("_csrf");
         List res = ControllerUtils.checkUserIncorrect(form, locale);
-        form.remove("password");
         if(!(boolean)res.get(1)){
             model.mergeAttributes((Map)res.get(0));
             model.addAllAttributes(form);
@@ -58,10 +51,7 @@ public class RegistrationController {
                 return "registration";
             }
 
-            user.setActive(true);
-            user.setRoles(Collections.singleton(Role.USER));
-
-            userRepository.save(user);
+            userService.save(user, form);
             logger.info("new User " + user.toString()+ " registered");
 
             return "redirect:/login";

@@ -2,13 +2,12 @@ package com.training.springproject.dto;
 
 import com.training.springproject.entity.Role;
 
-import javax.persistence.*;
 import java.util.Set;
 
 public class UserDTO {
     private Long id;
     private String username;
-    private String username_ukr;
+    private String usernameukr;
     private String email;
     private String password;
     private boolean active;
@@ -30,12 +29,12 @@ public class UserDTO {
         this.username = username;
     }
 
-    public String getUsername_ukr() {
-        return username_ukr;
+    public String getUsernameukr() {
+        return usernameukr;
     }
 
-    public void setUsername_ukr(String username_ukr) {
-        this.username_ukr = username_ukr;
+    public void setUsernameukr(String usernameukr) {
+        this.usernameukr = usernameukr;
     }
 
     public String getEmail() {
@@ -70,10 +69,10 @@ public class UserDTO {
         this.roles = roles;
     }
 
-    public UserDTO(Long id, String username, String username_ukr, String email, String password, boolean active, Set<Role> roles) {
+    public UserDTO(Long id, String username, String usernameukr, String email, String password, boolean active, Set<Role> roles) {
         this.id = id;
         this.username = username;
-        this.username_ukr = username_ukr;
+        this.usernameukr = usernameukr;
         this.email = email;
         this.password = password;
         this.active = active;

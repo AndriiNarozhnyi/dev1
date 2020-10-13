@@ -19,11 +19,12 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotBlank(message = "Username cannot be empty!")
+    @NotBlank(message = "Username cannot be empty!")
     private String username;
-    private String username_ukr;
-//    @Email(message = "emailIncorrect")
-//    @NotBlank(message = "emailIncorrect")
+    @NotBlank(message = "Username in ukrainian cannot be empty!")
+    private String usernameukr;
+    @Email(message = "emailIncorrect")
+    @NotBlank(message = "emailIncorrect")
     private String email;
     private String password;
     private boolean active;
@@ -80,12 +81,12 @@ public class User implements UserDetails, Serializable {
         this.username = username;
     }
 
-    public String getUsername_ukr() {
-        return username_ukr;
+    public String getUsernameukr() {
+        return usernameukr;
     }
 
-    public void setUsername_ukr(String username_ukr) {
-        this.username_ukr = username_ukr;
+    public void setUsernameukr(String username_ukr) {
+        this.usernameukr = username_ukr;
     }
 
     public String getEmail() {
@@ -155,7 +156,7 @@ public class User implements UserDetails, Serializable {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", username_ukr='" + username_ukr + '\'' +
+                ", username_ukr='" + usernameukr + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", active=" + active +
