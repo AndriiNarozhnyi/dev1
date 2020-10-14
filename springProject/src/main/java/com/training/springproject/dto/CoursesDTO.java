@@ -1,24 +1,25 @@
 package com.training.springproject.dto;
 
 import com.training.springproject.entity.Course;
+import org.springframework.data.domain.Page;
 
 
 import java.util.List;
 
 
 public class CoursesDTO {
-    private List<Course> courses;
+    private Page<Course> page;
 
     public CoursesDTO(List<Course> courses) {
-        this.courses = courses;
+        this.page = page;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public Page<Course> getCourses() {
+        return page;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setCourses(Page<Course> courses) {
+        this.page = page;
     }
 
     public CoursesDTO() {

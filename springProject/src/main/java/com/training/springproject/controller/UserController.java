@@ -40,18 +40,9 @@ public class UserController {
                                    direction = Sort.Direction.ASC) Pageable pageable,
                            @RequestParam String fusername,
                            @RequestParam String fusernameukr){
-//        String url = httpServletRequest.getRequestURI();
-//        Map <String, String> query = ControllerUtils.mapQuery(url);
         StringBuilder url = new StringBuilder("/user/filter");
-//        if (fusernameukr.indexOf("?")!=-1) {
-//            String fusernameukr1 = fusernameukr.substring(0, fusernameukr.indexOf("?"));
-//            fusernameukr = fusernameukr1;
-//        }
-
-
         url.append("?fusername="+fusername);
         url.append("&fusernameukr="+fusernameukr);
-
         if (fusername==null||fusernameukr==null){
             model.addAttribute("page", userService.findAllUsers(pageable));
         } else {
@@ -74,7 +65,7 @@ public class UserController {
         return "userlist";
     }
 
-    @GetMapping("/users/{user}")
+    @GetMapping("/user/{user}")
     public String userEditForm(@PathVariable User user, Model model){
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
@@ -94,7 +85,6 @@ public class UserController {
             model.addAttribute("roles", Role.values());
             return "userEdit";
         } else {
-
             userService.saveEdited(user, form, editedUser);
         }
         return "redirect:/user";

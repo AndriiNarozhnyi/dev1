@@ -1,6 +1,5 @@
 package com.training.springproject.service;
 
-import com.training.springproject.dto.CoursesDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.exceptions.CourseNotFoundException;
@@ -8,6 +7,8 @@ import com.training.springproject.exceptions.NoSuchActiveUserException;
 import com.training.springproject.repository.CourseRepository;
 import com.training.springproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,8 +29,8 @@ public class CourseService {
         this.userRepository = userRepository;
     }
 
-    public CoursesDTO getAllCourses() {
-        return new CoursesDTO(courseRepository.findAll());
+    public Page<Course> getAllCourses(Pageable pageable) {
+        return courseRepository.findAll(pageable);
     }
 
     public void saveNewCourse(Course course){
@@ -66,11 +67,8 @@ public class CourseService {
         return true;
     }
 
-    public List<Object> findByFiter(Map<String, String> form) {
-        List<Object> result = new ArrayList<>();
-        Map<String,String> map = new HashMap<>();
-        CoursesDTO courses = new CoursesDTO(
-                courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBeforeAndTeacherUsernameLikeOrderByStartDateAsc(
+    public Page<Course> findByFilter(Map<String, String> form, Pageable pageable) {
+        return courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateAfterAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateBeforeAndTeacherUsernameLikeOrderByStartDateAsc(
                 "%"+form.get("fname")+"%",
                 "%"+form.get("fnameukr")+"%",
                 "%"+form.get("ftopic")+"%",
@@ -79,23 +77,44 @@ public class CourseService {
                         Long.parseLong(form.get("fdurationMin")==""?"0":form.get("fdurationMin")),
                         Long.parseLong(form.get("fdurationMax")==""?"9999":form.get("fdurationMax")),
                         LocalDate.parse(form.get("fendDate")==""?"9999-02-02":form.get("fendDate")),
-                        "%"+form.get("fteacher")+"%"
-                ));
+                        "%"+form.get("fteacher")+"%",
+                pageable
+                );
+    }
+    public Page<Course> findByFilterIP(Map<String, String> form, Pageable pageable) {
+        return courseRepository.findByNameLikeAndNameukrLikeAndTopicLikeAndTopicukrLikeAndStartDateBeforeAndDurationGreaterThanEqualAndDurationLessThanEqualAndEndDateAfterAndTeacherUsernameLikeOrderByStartDateAsc(
+                "%" + form.get("fname") + "%",
+                "%" + form.get("fnameukr") + "%",
+                "%" + form.get("ftopic") + "%",
+                "%" + form.get("ftopicukr") + "%",
+                LocalDate.parse(form.get("fstartDate") == "" ? "0002-02-02" : form.get("fstartDate")),
+                Long.parseLong(form.get("fdurationMin") == "" ? "0" : form.get("fdurationMin")),
+                Long.parseLong(form.get("fdurationMax") == "" ? "9999" : form.get("fdurationMax")),
+                LocalDate.parse(form.get("fendDate") == "" ? "9999-02-02" : form.get("fendDate")),
+                "%" + form.get("fteacher") + "%",
+                pageable
+        );
+    }
 
-        result.add(courses);
-
-        map.put("fname", form.get("fname"));
-        map.put("fnameukr", form.get("fnameukr"));
-        map.put("ftopic", form.get("ftopic"));
-        map.put("ftopicukr", form.get("ftopicukr"));
-        map.put("fstartDate", form.get("fstartDate"));
-        map.put("fendDate", form.get("fendDate"));
-        map.put("fdurationMin", form.get("fdurationMin"));
-        map.put("fdurationMax", form.get("fdurationMax"));
-        map.put("fteacher", form.get("fteacher"));
-
-        result.add(map);
-        return result;
+    private void queryAndUrlProcessor(Map<String, String> form, Map<String, String> map, StringBuilder url) {
+        Iterator it = form.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            char first = ((String)pair.getKey()).charAt(0);
+            if(first=='f'){
+                map.put((String)pair.getKey(), (String)pair.getValue());
+                String key = (String)pair.getKey();
+                if (key.equals("fname")){
+                    url.append("?");
+                } else {
+                    url.append("&");
+                }
+                url.append(key);
+                url.append("=");
+                url.append(pair.getValue());
+            }
+//            it.remove(); // avoids a ConcurrentModificationException
+        }
     }
 
     public boolean editCourse(Integer courseId, Map<String, String> form) throws Exception {
@@ -133,5 +152,37 @@ boolean saveEditedCourse(Course course, Map<String, String> form) throws Excepti
             return true;
         }
         return false;
+    }
+
+    public List<Object> statusDispatcher(Map<String, String> form, Pageable pageable, StringBuilder url) {
+        List<Object> result = new ArrayList<>();
+        Map<String,String> map = new HashMap<>();
+        Page<Course> page;
+        queryAndUrlProcessor(form, map, url);
+        switch (form.get("fstatus")) {
+            case "Finished":
+                form.put("fendDate", LocalDate.now().plusDays(1).toString());
+                page = findByFilter(form, pageable);
+                break;
+            case "Not Started":
+                form.put("fstartDate", LocalDate.now().plusDays(1).toString());
+                page = findByFilter(form, pageable);
+                break;
+            case "In Progress":
+                form.put("fstartDate", LocalDate.now().plusDays(2).toString());
+                form.put("fendDate", LocalDate.now().plusDays(0).toString());
+                page = findByFilterIP(form, pageable);
+                break;
+            default:
+                page = findByFilter(form, pageable);
+                break;
+        }
+        System.out.println(form.get("fstartDate"));
+        System.out.println(form.get("fendDate"));
+                result.add(page);
+                result.add(map);
+                result.add(url.toString());
+                return result;
+
     }
 }

@@ -21,7 +21,7 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
     public String handleException(Exception ex, Model model) {
         logger.info("Exception: ",ex.getMessage());
         System.out.println("exception helper working");
-        model.addAttribute("message1", ex.getMessage());
+        model.addAttribute("message", ex.getMessage());
         return "error";
     }
 

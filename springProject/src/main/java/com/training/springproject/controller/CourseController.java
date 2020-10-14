@@ -10,6 +10,8 @@ import com.training.springproject.service.UserService;
 import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
@@ -46,21 +47,27 @@ public class CourseController {
 
     @GetMapping("/courses")
     public String showCourses (@AuthenticationPrincipal User user,
-                               @PageableDefault(sort = {"name"},
+                               @PageableDefault(sort = {"startDate"},
                                        direction = Sort.Direction.ASC) Pageable pageable,
-            Model model) throws Exception{
-        CoursesDTO courses = courseService.getAllCourses();
-        model.addAttribute("courses", courses);
+                               Model model) throws Exception{
+        Page<Course> page = courseService.getAllCourses(pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/courses");
         return "courses";
     }
 
-    @GetMapping("/course_filter")
-    public String courseFilter(
-                               @RequestParam Map<String,String> form,
+    @GetMapping("/courses/filter")
+    public String courseFilter(@RequestParam Map<String,String> form,
+                               @PageableDefault(sort = {"startDate"},
+                                       direction = Sort.Direction.ASC) Pageable pageable,
                                Model model){
-        List<Object> result = courseService.findByFiter(form);
-        model.addAttribute("courses", result.get(0));
+        StringBuilder url = new StringBuilder("/courses/filter");
+        List<Object> result = courseService.statusDispatcher(form, pageable, url);
+
+        model.addAttribute("page", result.get(0));
         model.mergeAttributes((Map<String, String>)result.get(1));
+        model.addAttribute("am", result.get(2).toString().contains("?")?1:0);
+        model.addAttribute("url", result.get(2));
 
         return "courses";
     }
@@ -79,6 +86,40 @@ public class CourseController {
                                Model model){
         courseService.unenrollUser(courseId, user);
         return "redirect:/courses";
+    }
+
+    @PostMapping("/cabinet/unenroll")
+    public String unenrollCourseCabinet(@AuthenticationPrincipal User user,
+                                 @RequestParam Integer courseId,
+                                 Model model){
+        courseService.unenrollUser(courseId, user);
+        return "redirect:/cabinet";
+    }
+    @GetMapping("/cabinet/filter")
+    public String courseFilterCabinet(@AuthenticationPrincipal User user,
+            @RequestParam Map<String,String> form,
+                               @PageableDefault(sort = {"startDate"},
+                                       direction = Sort.Direction.ASC) Pageable pageable,
+                               Model model){
+        StringBuilder url = new StringBuilder("/cabinet/filter");
+        List<Object> result = courseService.statusDispatcher(form, pageable, url);
+
+        model.addAttribute("page", result.get(0));
+        model.mergeAttributes((Map<String, String>)result.get(1));
+        model.addAttribute("am", result.get(2).toString().contains("?")?1:0);
+        model.addAttribute("url", result.get(2));
+
+        return "cabinet";
+    }
+    @GetMapping("/cabinet")
+    public String showCoursesCabinet (@AuthenticationPrincipal User user,
+                               @PageableDefault(sort = {"startDate"},
+                                       direction = Sort.Direction.ASC) Pageable pageable,
+                               Model model) throws Exception{
+        Page<Course> page = courseService.getAllCourses(pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/cabinet");
+        return "cabinet";
     }
 
 

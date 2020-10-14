@@ -9,20 +9,30 @@
 
 <div class="container">
 <h3> Courses filter & list</h3>
-<form action="/course_filter" method="get">
+<form action="/courses/filter" method="get">
     <table>
             <thead>
             <tr class="text-center">
-                <th>Name</th><th>Name-ukr</th><th>Topic</th><th>Topic_ukr</th><th>startDate</th>
+                <th>Name</th><th>Name-ukr</th><th>Topic</th><th>Topic_ukr</th><th>startDate</th><th>Status</th>
             </tr>
             </thead>
         <tbody>
         <tr>
-    <td class="text-center"><input type="text" name="fname" th:value="${fname}?:''" /></td>
-    <td class="text-center"><input type="text" name="fnameukr" th:value="${fnameukr}?:''" /></td>
-    <td class="text-center"><input type="text" name="ftopic" th:value="${ftopic}?:''" /></td>
-    <td class="text-center"><input type="text" name="ftopicukr" th:value="${ftopicukr}?:''" /></td>
-    <td class="text-center"><input type="date" name="fstartDate" th:value="${fstartDate}?:''" /></td>
+    <td class="text-center"><input type="text" name="fname" th:value="${fname}?${fname}:''" /></td>
+    <td class="text-center"><input type="text" name="fnameukr" th:value="${fnameukr}?${fnameukr}:''" /></td>
+    <td class="text-center"><input type="text" name="ftopic" th:value="${ftopic}?${ftopic}:''" /></td>
+    <td class="text-center"><input type="text" name="ftopicukr" th:value="${ftopicukr}?${ftopicukr}:''" /></td>
+    <td class="text-center"><input type="date" name="fstartDate" th:value="${fstartDate}?${fstartDate}:''" /></td>
+    <td class="text-center">
+        <select class="form-control" name="fstatus" id="fstatus" th:with="statusList = ${ {'In Progress', 'Finished','Not Started'} }">
+            <option value="0"></option>
+            <option th:each="status : ${statusList}"
+                    th:selected="${fstatus}"
+                    th:value="${status}?${status}:0"
+                    th:text="${status}">
+            </option>
+        </select>
+    </td>
         </tr>
         </tbody>
         <thead>
@@ -32,11 +42,10 @@
         </thead>
         <tbody>
        <tr>
-    <td class="text-center"><input type="number" min="0" name="fdurationMin" th:value="${fdurationMin}?:''" /></td>
-    <td class="text-center"><input type="number" min="0" name="fdurationMax" th:value="${fdurationMax}?:''" /></td>
-    <td class="text-center"><input type="date" name="fendDate" th:value="${fendDate}?:''" /></td>
-    <td class="text-center"><input type="text" name="fteacher" th:value="${fteacher}?:''" /></td>
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+    <td class="text-center"><input type="number" min="0" name="fdurationMin" th:value="${fdurationMin}?${fdurationMin}:''" /></td>
+    <td class="text-center"><input type="number" min="0" name="fdurationMax" th:value="${fdurationMax}?${fdurationMax}:''" /></td>
+    <td class="text-center"><input type="date" name="fendDate" th:value="${fendDate}?${fendDate}:''" /></td>
+    <td class="text-center"><input type="text" name="fteacher" th:value="${fteacher}?${fteacher}:''" /></td>
     <td><button class="btn btn-primary" type="submit">Filter</button></td>
            <td><a href="/courses" class="btn btn-warning">Reset filter</a> </td>
        </tr>
@@ -55,10 +64,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${courses.courses.empty}">
+    <tr th:if="${page.empty}">
         <td colspan="2"> No Courses Available </td>
     </tr>
-    <tr th:each="course : ${courses.courses}">
+    <tr th:each="course : ${page}">
         <td class="text-center"><span th:text="${course.id}"> Id</span></td>
         <td class="text-center"><span th:text="${course.name}"> Name </span></td>
         <td class="text-center"><span th:text="${course.nameukr}"> Name </span></td>
