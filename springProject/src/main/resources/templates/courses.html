@@ -67,6 +67,7 @@
     <tr th:if="${page.empty}">
         <td colspan="2"> No Courses Available </td>
     </tr>
+    <span th:text="${deleteMessage}?${deleteMessage}:''"/>
     <tr th:each="course : ${page}">
         <td class="text-center"><span th:text="${course.id}"> Id</span></td>
         <td class="text-center"><span th:text="${course.name}"> Name </span></td>
@@ -100,6 +101,14 @@
         <td th:if="${#request.userPrincipal.principal.isAdmin()}">
             <div th:if="${!course.isFinished()}">
             <a class="btn btn-dark mx-2" th:href="@{/adminupdate/{id}(id=${course.id})}">Edit</a>
+            </div>
+        </td>
+        <td th:if="${#request.userPrincipal.principal.isAdmin()}">
+            <div th:if="${course.isNotStarted()}">
+                <form th:action="@{/adminupdate/delete/{id}(id=${course.id})}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn btn-dark mx-2">Delete</button>
+                </form>
             </div>
         </td>
     </tr>

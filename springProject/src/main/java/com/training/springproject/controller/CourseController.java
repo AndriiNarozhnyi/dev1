@@ -33,6 +33,8 @@ public class CourseController {
     private final UserService userService;
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
 
     @Autowired
     public CourseController(CourseService courseService, UserService userService){
@@ -77,6 +79,7 @@ public class CourseController {
                                @RequestParam Integer courseId,
                                Model model){
         courseService.enrollUser(courseId, user);
+        logger.info(user.getUsername() + " enrolled for course #" + courseId);
         return "redirect:/courses";
     }
 
@@ -85,6 +88,7 @@ public class CourseController {
                                  @RequestParam Integer courseId,
                                Model model){
         courseService.unenrollUser(courseId, user);
+        logger.info(user.getUsername() + " unenrolled from course #" + courseId);
         return "redirect:/courses";
     }
 
@@ -93,6 +97,7 @@ public class CourseController {
                                  @RequestParam Integer courseId,
                                  Model model){
         courseService.unenrollUser(courseId, user);
+        logger.info(user.getUsername() + " unenrolled from course #" + courseId);
         return "redirect:/cabinet";
     }
     @GetMapping("/cabinet/filter")

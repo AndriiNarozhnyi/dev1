@@ -18,6 +18,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Override
     Page<Course> findAll(Pageable pageable);
+    boolean deleteById(Integer id);
 
 
 

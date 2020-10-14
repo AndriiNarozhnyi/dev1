@@ -4,6 +4,7 @@ import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.exceptions.CourseNotFoundException;
 import com.training.springproject.exceptions.NoSuchActiveUserException;
+import com.training.springproject.exceptions.NoSuchCourseException;
 import com.training.springproject.repository.CourseRepository;
 import com.training.springproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,12 @@ public class CourseService {
         return courseRepository.findAll(pageable);
     }
 
-    public void saveNewCourse(Course course){
-        logger.info("new course created " + course.toString());
+    public void saveNewCourse(Course course, Long id){
         try {
         courseRepository.save(course);
         } catch (Exception ex){
         }
+        logger.info("User id=" + id + " created " + course.toString());
     }
 
     public Optional<Course> findById(Integer courseId) {
@@ -117,7 +118,7 @@ public class CourseService {
         }
     }
 
-    public boolean editCourse(Integer courseId, Map<String, String> form) throws Exception {
+    public boolean editCourse(Integer courseId, Map<String, String> form, Long id) throws Exception {
         Course course = findById(courseId).orElseThrow(()->new CourseNotFoundException("course was deleted, apply to admin for logs"));
         course.setName(form.get("name"));
         course.setNameukr(form.get("nameukr"));
@@ -127,11 +128,11 @@ public class CourseService {
         course.setEndDate(LocalDate.parse(form.get("endDate")).plusDays(1));
         course.setDuration(DAYS.between(LocalDate.parse(form.get("startDate")), LocalDate.parse(form.get("endDate"))));
 
-        return saveEditedCourse(course, form);
+        return saveEditedCourse(course, form, id);
 
     }
 @Transactional // I think here it may not be necessary
-boolean saveEditedCourse(Course course, Map<String, String> form) throws Exception {
+boolean saveEditedCourse(Course course, Map<String, String> form, Long id) throws Exception {
         if (!form.get("newTeacherId").equals("0")){
             User newTeacher = userRepository.findByIdAndActiveTrue(Long.parseLong(form.get("newTeacherId")))
                     .orElseThrow(()->new NoSuchActiveUserException("No active teacher by this id"));
@@ -143,6 +144,9 @@ boolean saveEditedCourse(Course course, Map<String, String> form) throws Excepti
             }
         }
         courseRepository.save(course);
+        logger.info("User id = "+ id +" edited course " +course.toString());
+
+
     return true;
     }
 
@@ -183,6 +187,14 @@ boolean saveEditedCourse(Course course, Map<String, String> form) throws Excepti
                 result.add(map);
                 result.add(url.toString());
                 return result;
+
+    }
+    @Transactional
+    public void delete(Integer id) {
+        Course course = courseRepository.findById(id).orElseThrow(()->new NoSuchCourseException("Course does not exist"));
+        course.getEnrolledStudents().clear();
+        courseRepository.save(course);
+            courseRepository.delete(course);
 
     }
 }

@@ -13,7 +13,7 @@
         <table>
             <thead>
             <tr class="text-center">
-                <th>Name</th><th>Name-ukr</th><th>Topic</th><th>Topic_ukr</th><th>startDate</th>
+                <th>Name</th><th>Name-ukr</th><th>Topic</th><th>Topic_ukr</th><th>startDate</th><th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -23,6 +23,16 @@
                 <td class="text-center"><input type="text" name="ftopic" th:value="${ftopic}?${ftopic}:''" /></td>
                 <td class="text-center"><input type="text" name="ftopicukr" th:value="${ftopicukr}?${ftopicukr}:''" /></td>
                 <td class="text-center"><input type="date" name="fstartDate" th:value="${fstartDate}?${fstartDate}:''" /></td>
+                <td class="text-center">
+                    <select class="form-control" name="fstatus" id="fstatus" th:with="statusList = ${ {'In Progress', 'Finished','Not Started'} }">
+                        <option value="0"></option>
+                        <option th:each="status : ${statusList}"
+                                th:selected="${fstatus}"
+                                th:value="${status}?${status}:0"
+                                th:text="${status}">
+                        </option>
+                    </select>
+                </td>
             </tr>
             </tbody>
             <thead>
@@ -49,11 +59,10 @@
         <thead>
         <tr class="text-center">
             <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th><th>startDate</th>
-            <th> Duration </th><th> endDate </th><th> teacher </th><th> Q-ty of students</th><th>Action</th>
+            <th> Duration </th><th> endDate </th><th> teacher </th><th> Q-ty of students</th>
 
         </tr>
         </thead>
-        <div>
         <tr th:if="${page.empty}">
             <td colspan="2"> No Courses Available </td>
         </tr>
@@ -88,12 +97,6 @@
                     </form>
                 </div>
             </td>
-
-<!--            <td th:if="${#request.userPrincipal.principal.isAdmin()}">-->
-<!--                <div th:if="${!course.isFinished()}">-->
-<!--                    <a class="btn btn-dark mx-2" th:href="@{/adminupdate/{id}(id=${course.id})}">Edit</a>-->
-<!--                </div>-->
-<!--            </td>-->
                 </tr>
         </div>
         </div>
@@ -102,7 +105,6 @@
         </tbody>
     </table>
 
-    <!--<h3 th:text="${#request.userPrincipal.principal.getUsername()}"></h3>-->
 </div>
 <div th:include="fragments/footer::footer"></div>
 </body>

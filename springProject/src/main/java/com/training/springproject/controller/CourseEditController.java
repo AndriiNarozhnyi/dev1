@@ -10,6 +10,7 @@ import com.training.springproject.exceptions.NoSuchCourseException;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +44,7 @@ public class CourseEditController {
     }
 
         @PostMapping
-        public String updateCourse(
-                //is it ok to get course like that or it is better to make whole update by native query "update"?
+        public String updateCourse(@AuthenticationPrincipal User user,
                 @RequestParam Integer courseId,
                 @RequestParam Map<String, String> form, Model model) throws Exception {
         form.remove("_csrf");
@@ -61,9 +61,22 @@ public class CourseEditController {
                 return "courseEdit";
             }
 
+        courseService.editCourse(courseId, form, user.getId());
 
-        courseService.editCourse(courseId, form);
         return "redirect:/courses";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteCourse(@AuthenticationPrincipal User user,
+                               @PathVariable Integer id, Model model){
+        Course course = courseService.findById(id).orElseThrow(()-> new NoSuchCourseException("Course is not found"));
+        if (course.isFinished()||course.isStarted()){
+            model.addAttribute("messageDelete", "Finished or started course cannot be deleted");
+            return "courses";
+        }
+        courseService.delete(id);
+            logger.info("Course id " + id + "deleted by " + user.getId());
+            return "redirect:/courses";
         }
 
 

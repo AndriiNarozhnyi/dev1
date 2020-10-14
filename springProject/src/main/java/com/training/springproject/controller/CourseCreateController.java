@@ -6,6 +6,7 @@ import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class CourseCreateController {
     }
 
     @PostMapping
-    public String addCourse(
+    public String addCourse(@AuthenticationPrincipal User user,
             @RequestParam Map<String, String> form,
             Model model) {
         form.remove("_csrf");
@@ -66,8 +67,9 @@ public class CourseCreateController {
                 .duration(DAYS.between(LocalDate.parse(form.get("startDate")), LocalDate.parse(form.get("endDate")).plusDays(1)))
                 .endDate(LocalDate.parse(form.get("endDate")))
                 .teacher(teacher)
-                .build()
+                .build(), user.getId()
         );
+
         return "redirect:/courses";
     }
 
