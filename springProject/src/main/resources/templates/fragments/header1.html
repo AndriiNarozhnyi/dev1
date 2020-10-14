@@ -17,26 +17,26 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/" th:text="#{Home}">Home</a>
             </li>
             <div th:if="${#request.userPrincipal}!=null">
             <li class="nav-item">
-                <a class="nav-link" href="/courses">Courses</a>
+                <a class="nav-link" href="/courses" th:text="#{Courses}">Courses</a>
             </li>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
             <li class="nav-item">
-                <a class="nav-link" href="/cabinet">Cabinet</a>
+                <a class="nav-link" href="/cabinet" th:text="#{Cabinet}">Cabinet</a>
             </li>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
             <li class="nav-item" th:if="${#request.userPrincipal.principal.isAdmin()}">
-                <a class="nav-link" href="/admincreate">CoursesCreate</a>
+                <a class="nav-link" href="/admincreate" th:text="#{CreateCourse}">Create Course</a>
             </li>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
             <li class="nav-item" th:if="${#request.userPrincipal.principal.isAdmin()}">
-                <a class="nav-link" href="/user">UserEdit</a>
+                <a class="nav-link" href="/user" th:text="#{UserEdit}">User Edit</a>
             </li>
             </div>
         </ul>
@@ -45,7 +45,7 @@
         <a class="btn btn-primary mx-2" th:href="@{''(lang=uk)}" th:text="#{switch-uk}"></a>
         <div>
             <div th:if="${#request.userPrincipal}==null">
-                <a class="btn btn-success mx-2" href="/login">Login</a>
+                <a class="btn btn-success mx-2" href="/login" th:text="#{login}">Login</a>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
                 <form action="/logout" method="post">

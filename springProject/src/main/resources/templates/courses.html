@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Courses list</title>
+    <title th:text="#{userCabinet}">User Cabinet</title>
 </head>
 <body>
 <div th:include="fragments/header1.html::header1"></div>
 
 <div class="container">
-<h3> Courses filter & list</h3>
+<h3 th:text="#{CourseFilterList}"> Courses filter & list</h3>
 <form action="/courses/filter" method="get">
     <table>
             <thead>
             <tr class="text-center">
-                <th>Name</th><th>Name-ukr</th><th>Topic</th><th>Topic_ukr</th><th>startDate</th><th>Status</th>
+                <th th:text="#{name}">Name</th><th th:text="#{Nameukr}">Name-ukr</th><th th:text="#{Topic}">Topic</th><th th:text="#{Topicukr}">Topic_ukr</th><th th:text="#{startDate}">startDate</th><th th:text="#{status}">Status</th>
             </tr>
             </thead>
         <tbody>
@@ -37,7 +37,7 @@
         </tbody>
         <thead>
         <tr class="text-center">
-            <th>Duration min</th><th>Duration max</th><th>endDate</th><th>teacher</th>
+            <th th:text="#{durmin}">Duration min</th><th th:text="#{durmax}">Duration max</th><th th:text="#{endDate}">endDate</th><th th:text="#{teacher}">Teacher</th>
         </tr>
         </thead>
         <tbody>
@@ -46,8 +46,8 @@
     <td class="text-center"><input type="number" min="0" name="fdurationMax" th:value="${fdurationMax}?${fdurationMax}:''" /></td>
     <td class="text-center"><input type="date" name="fendDate" th:value="${fendDate}?${fendDate}:''" /></td>
     <td class="text-center"><input type="text" name="fteacher" th:value="${fteacher}?${fteacher}:''" /></td>
-    <td><button class="btn btn-primary" type="submit">Filter</button></td>
-           <td><a href="/courses" class="btn btn-warning">Reset filter</a> </td>
+    <td><button class="btn btn-primary" type="submit" th:text="#{Filter}">Filter</button></td>
+           <td><a href="/courses" class="btn btn-warning" th:text="#{resfilter}">Reset filter</a> </td>
        </tr>
         </tbody>
     </table>
@@ -58,14 +58,14 @@
 <table>
     <thead>
     <tr class="text-center">
-        <th> ID </th><th> Name </th><th> Name-ukr </th><th> Topic </th><th> Topic_ukr </th><th>startDate</th>
-        <th> Duration </th><th> endDate </th><th> teacher </th><th> Q-ty of students</th><th>Action</th>
+        <th th:text="#{idc}"> ID </th><th th:text="#{name}"> Name </th><th th:text="#{Nameukr}"> Name-ukr </th><th th:text="#{Topic}"> Topic </th><th th:text="#{Topicukr}"> Topic_ukr </th><th th:text="#{startDate}">startDate</th>
+        <th th:text="#{dur}"> Duration </th><th th:text="#{endDate}"> endDate </th><th th:text="#{teacher}"> teacher </th><th th:text="#{qtystuds}"> Q-ty of students</th><th th:text="#{action}"> Action</th>
 
     </tr>
     </thead>
     <tbody>
     <tr th:if="${page.empty}">
-        <td colspan="2"> No Courses Available </td>
+        <td colspan="2" th:text="#{no_cour_avail}"> No Courses Available </td>
     </tr>
     <span th:text="${deleteMessage}?${deleteMessage}:''"/>
     <tr th:each="course : ${page}">
@@ -84,7 +84,7 @@
                 <form action="/courses/enroll" method="post">
                     <input type="hidden" name="courseId" th:value="${course.id}">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                    <button class="btn btn-success" type="submit">Enroll</button>
+                    <button class="btn btn-success" type="submit" th:text="#{enroll}">Enroll</button>
             </form>
             </div>
         </td>
@@ -93,21 +93,21 @@
             <form action="/courses/unenroll" method="post">
                 <input type="hidden" name="courseId" th:value="${course.id}">
                 <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                <button class="btn btn-warning" type="submit">Unenroll</button>
+                <button class="btn btn-warning" type="submit" th:text="#{unenroll}">Unenroll</button>
             </form>
             </div>
         </td>
 
         <td th:if="${#request.userPrincipal.principal.isAdmin()}">
             <div th:if="${!course.isFinished()}">
-            <a class="btn btn-dark mx-2" th:href="@{/adminupdate/{id}(id=${course.id})}">Edit</a>
+            <a class="btn btn-dark mx-2" th:href="@{/adminupdate/{id}(id=${course.id})}" th:text="#{edit}">Edit</a>
             </div>
         </td>
         <td th:if="${#request.userPrincipal.principal.isAdmin()}">
             <div th:if="${course.isNotStarted()}">
                 <form th:action="@{/adminupdate/delete/{id}(id=${course.id})}" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                    <button type="submit" class="btn btn-dark mx-2">Delete</button>
+                    <button type="submit" class="btn btn-danger" th:text="#{delete}">Delete</button>
                 </form>
             </div>
         </td>
@@ -115,7 +115,6 @@
     </tbody>
 </table>
 
-<!--<h3 th:text="${#request.userPrincipal.principal.getUsername()}"></h3>-->
 </div>
 <div th:include="fragments/footer::footer"></div>
 </body>

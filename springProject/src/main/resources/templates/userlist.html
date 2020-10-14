@@ -2,31 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>UserList</title>
+    <title th:text="#{userList}">User List</title>
 </head>
 <body>
 <div th:include="fragments/header1.html::header1"></div>
 <div class="container">
-<h3> List of users</h3>
+<h3 th:text="#{listUsr}"> List of users</h3>
     <form action="/user/filter" method="get">
         <div class="row justify-content-md-left">
             <div class="col col-lg-1">
-                <label>Username</label>
+                <label th:text="#{username}">Username</label>
             </div>
             <div class="col col-lg-2">
                 <input type="text" name="fusername" th:value="${fusername}?${fusername}:''">
             </div>
             <div class="col col-lg-1">
-                <label>Usernameukr</label>
+                <label th:text="#{usernameUkr}">Usernameukr</label>
             </div>
             <div class="col col-lg-2">
                 <input type="text" name="fusernameukr" th:value="${fusernameukr}?${fusernameukr}:''">
             </div>
             <div class="col col-lg-1">
-                <button class="btn btn-primary" type="submit">Filter</button>
+                <button class="btn btn-primary" type="submit" th:text="#{filter}">Filter</button>
             </div>
             <div class="col col-lg-2">
-            <a href="/user" class="btn btn-warning">Reset filter</a>
+            <a href="/user" class="btn btn-warning" th:text="#{resetFilter}">Reset filter</a>
             </div>
         </div>
     </form>
@@ -34,12 +34,12 @@
 <table>
     <thead>
     <tr class="text-center">
-        <th> ID </th><th> Name </th><th> Name-ukr </th><th> email </th><th>active</th><th> Roles </th>
+        <th th:text="#{idc}"> ID </th><th th:text="#{usrname}"> Name </th><th th:text="#{usernameUkr}"> Name-ukr </th><th th:text="#{email}"> email </th><th th:text="#{active}">active</th><th th:text="#{roles}"> Roles </th>
     </tr>
     </thead>
     <tbody>
     <tr th:if="${page.empty}">
-        <td colspan="2"> No Users Available </td>
+        <td colspan="2" th:text="#{noUsAv}"> No Users Available </td>
     </tr>
     <tr class="text-center" th:each="user : ${page}">
         <td><span th:text="${user.id}"> Id</span></td>

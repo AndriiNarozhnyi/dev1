@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>UserEdit</title>
+    <title th:text="#{useredit}">User Edit</title>
 </head>
 <body>
 <div th:include="fragments/header1.html::header1"></div>
@@ -14,7 +14,7 @@
 <form action="/user/save" method="post">
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label> Username</label>
+            <label th:text="#{username}"> Username</label>
         </div>
         <div class="col col-lg-3">
             <input type="text" name="username" th:value="${user.username}">
@@ -22,7 +22,7 @@
     </div>
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label> Username_ukr </label>
+            <label th:text="#{usernameUkr}"> Username_ukr </label>
         </div>
         <div class="col col-lg-3">
             <input type="text" name="usernameukr" th:value="${user.usernameukr}">
@@ -30,15 +30,15 @@
     </div>
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label> email </label>
+            <label th:text="#{email}"> email </label>
         </div>
         <div class="col col-lg-3">
             <input type="text" name="email" th:value="${user.email}">
         </div>
     </div>
-    <h3> User status</h3>
-    <label>Active</label><input type="checkbox" name="isActive" th:checked="${user.isActive()}">
-    <h3> User authorities</h3>
+    <h3 th:text="#{userStatus}"> User status</h3>
+    <label th:text="#{active}">Active</label><input type="checkbox" name="isActive" th:checked="${user.isActive()}">
+    <h3 th:text="#{userAuth}"> User authorities</h3>
     <table>
         <tbody>
         <tr th:each="role:${roles}">
@@ -48,7 +48,7 @@
     </table>
     <input type="hidden" th:value="${user.id}" name="userId">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-    <input type="submit" value="Save">
+    <input type="submit" th:value="#{save}">
 </form>
 </div>
 </body>

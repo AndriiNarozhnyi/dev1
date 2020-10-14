@@ -1,13 +1,9 @@
 package com.training.springproject.controller;
 
-import com.training.springproject.dto.CourseDTO;
-import com.training.springproject.dto.CoursesDTO;
-import com.training.springproject.dto.UsersDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
-import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -21,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,15 +25,15 @@ import java.util.Map;
 public class CourseController {
     private final CourseService courseService;
     private final UserService userService;
-    @Autowired
     private MessageSource messageSource;
-    @Autowired
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
 
     @Autowired
-    public CourseController(CourseService courseService, UserService userService){
+    public CourseController(CourseService courseService, UserService userService,
+                            MessageSource messageSource){
         this.courseService = courseService;
         this.userService = userService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("/")

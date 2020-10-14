@@ -13,7 +13,7 @@
             <div class="col col-lg-3">
                 <ul class="pagination">
                     <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Pages</a>
+                        <a class="page-link" href="#" tabindex="-1" th:text="#{Pages}">Pages</a>
                     </li>
                     <th:block th:each="p:${#numbers.sequence(0,page.getTotalPages()-1)}">
                         <div th:if="${p}==${page.getNumber()}">
@@ -37,7 +37,7 @@
             <div class="col col-lg-4">
                 <ul class="pagination" th:with="itemNumber = ${ {3,6,9,12} }">
                     <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Elements per page</a>
+                        <a class="page-link" href="#" tabindex="-1" th:text="#{ElPage}">Elements per page</a>
                     </li>
                     <th:block th:each="c:${itemNumber}">
                         <div th:if="${c}==${page.getSize()}">

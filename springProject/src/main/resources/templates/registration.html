@@ -16,40 +16,40 @@
 <form action="/registration" method="post">
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label>Username</label>
+            <label th:text="#{username}">Username</label>
         </div>
         <div class="col col-lg-3">
-            <input type="text" name="username" th:value="${username}?${username}:''"placeholder="username" />
+            <input type="text" name="username" th:value="${username}?${username}:''" th:placeholder="#{username}" />
         </div>
     </div>
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label>Username Ukr</label>
+            <label th:text="#{usernameUkr}">Username Ukr</label>
         </div>
         <div class="col col-lg-3">
-            <input type="text" name="usernameukr" th:value="${usernameukr}?${usernameukr}:''"placeholder="username" />
+            <input type="text" name="usernameukr" th:value="${usernameukr}?${usernameukr}:''" th:placeholder="#{usernameUkr}" />
         </div>
     </div>
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label>Email</label>
+            <label th:text="#{email}">Email</label>
         </div>
         <div class="col col-lg-3">
-            <input type="text" name="email" th:value="${email}?${email}:''" placeholder="email">
+            <input type="text" name="email" th:value="${email}?${email}:''" th:placeholder="#{email}">
         </div>
     </div>
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <label>Password</label>
+            <label th:text="#{password}">Password</label>
         </div>
         <div class="col col-lg-3">
-            <input type="password" name="password" placeholder="password" />
+            <input type="password" name="password" th:placeholder="#{password}" />
         </div>
     </div>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
     <div class="row justify-content-md-left">
         <div class="col col-lg-2">
-            <button type="submit">Add</button>
+            <button type="submit" th:text="#{add}">Add</button>
         </div>
     </div>
 </form>

@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Name</label>
+                    <label th:text="#{CourseName}">Name</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="name" th:value="${name}?${name}:''">
@@ -26,7 +26,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Nameukr    </label>
+                    <label th:text="#{CourseNameUkr}">Nameukr</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="nameukr" th:value="${nameukr}?${nameukr}:''">
@@ -34,7 +34,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Topic      </label>
+                    <label th:text="#{Topic}">Topic</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="topic" th:value="${topic}?${topic}:''">
@@ -42,7 +42,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Topicukr   </label>
+                    <label th:text="#{Topicukr}">Topicukr</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="topicukr" th:value="${topicukr}?${topicukr}:''">
@@ -50,7 +50,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>startDate  </label>
+                    <label th:text="#{startDate}">startDate</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="date" name="startDate" th:value="${startDate}?${startDate}:''">
@@ -58,7 +58,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>endDate    </label>
+                    <label th:text="#{endDate}">endDate</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="date" name="endDate" th:value="${endDate}?${endDate}:''">
@@ -66,7 +66,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <Label>Select Teacher</Label>
+                    <Label th:text="#{selectTeacher}">Select Teacher</Label>
                 </div>
                 <div class="col col-lg-2">
                     <select class="form-control" name="teacherId" id="ti">
@@ -82,7 +82,7 @@
             <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <button class="btn btn-secondary" type="submit">Save</button>
+                    <button class="btn btn-secondary" type="submit" th:text="#{save}">Save</button>
                 </div>
             </div>
         </div>

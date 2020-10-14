@@ -11,7 +11,7 @@
     <div>  <input type="text" name="username"/><label th:text="#{username}"></label></div>
     <div><input type="password" name="password"/> <label th:text="#{password}"></label></div>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" th:value="#{signin}"/></div>
 </form>
 
 <a href="registration" th:text="#{registration}"></a>

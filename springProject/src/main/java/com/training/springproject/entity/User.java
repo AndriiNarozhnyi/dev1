@@ -19,9 +19,9 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Username cannot be empty!")
+    @NotBlank(message = "usNameEm")
     private String username;
-    @NotBlank(message = "Username in ukrainian cannot be empty!")
+    @NotBlank(message = "usNameEmUk")
     private String usernameukr;
     @Email(message = "emailIncorrect")
     @NotBlank(message = "emailIncorrect")

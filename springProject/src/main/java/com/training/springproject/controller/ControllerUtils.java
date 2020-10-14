@@ -1,9 +1,7 @@
 package com.training.springproject.controller;
 
 import com.training.springproject.entity.Course;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -14,10 +12,15 @@ import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-@Controller
-public class ControllerUtils {
 
-    static Map<String, String> getErrors(BindingResult bindingResult) {
+public class ControllerUtils {
+    private final MessageSource messageSource;
+
+    public ControllerUtils(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    Map<String, String> getErrors(BindingResult bindingResult, Locale locale) {
         Collector<FieldError, ?, Map<String, String>> collector = Collectors.toMap(
                 fieldError -> fieldError.getField() + "Error",
                 FieldError::getDefaultMessage
@@ -48,25 +51,24 @@ public class ControllerUtils {
         return false;
     }
 
-    public static List<Object> checkCourseIncorrect(Map<String, String> form) {
-        //TODO - transfer to controller class o learn how to get messageSourse from here
+    public List<Object> checkCourseIncorrect(Map<String, String> form, Locale locale) {
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
         if (checkNameEmpty(form.get("name"))){
-            answer.put("incname", "Course name cannot be empty");
+            answer.put("incname", messageSource.getMessage("incname", null, locale));
             check = false;
         }
         if (checkNameEmpty(form.get("nameukr"))){
-            answer.put("incnameukr", "Course name in Ukrainian cannot be empty");
+            answer.put("incnameukr", messageSource.getMessage("incnameukr",null, locale));
             check = false;
         }
         if (checkNameEmpty(form.get("topic"))){
-            answer.put("inctopic", "Course topic cannot be empty");
+            answer.put("inctopic", messageSource.getMessage("inctopic", null, locale));
             check = false;
         }
         if (checkNameEmpty(form.get("topicukr"))){
-            answer.put("inctopicukr", "Course topic in Ukrainian cannot be empty");
+            answer.put("inctopicukr", messageSource.getMessage("inctopicukr", null, locale));
             check = false;
         }
         if (checkDate(form.get("startDate"))){
@@ -74,12 +76,12 @@ public class ControllerUtils {
             check = false;
         }
         if (checkDate(form.get("endDate"))){
-            answer.put("incEndDate", "End date cannot be empty or before today");
+            answer.put("incEndDate", messageSource.getMessage("incEndDate", null, locale));
             check = false;
         }
         if ((!(answer.containsKey("incStartDate")||answer.containsKey("incendtDate")))&&
                 (LocalDate.parse(form.get("startDate")).isAfter(LocalDate.parse(form.get("endDate"))))){
-            answer.put("endBeforeStart", "End Date cannot be less then start Date");
+            answer.put("endBeforeStart", messageSource.getMessage("endBeforeStart", null, locale));
             check=false;
         }
         res.add(answer);
@@ -95,25 +97,24 @@ public class ControllerUtils {
         return false;
     }
 
-    public static List checkUserIncorrect(Map<String, String> form, Locale locale) {
-        //TODO - transfer to controller class as I cannot get messageSourse from here
+    public List checkUserIncorrect(Map<String, String> form, Locale locale) {
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
         if (checkNameEmpty(form.get("username"))){
-            answer.put("incusername", "User name cannot be empty");
+            answer.put("incusername", messageSource.getMessage("incusername", null,locale));
             check = false;
         }
         if (checkNameEmpty(form.get("usernameukr"))){
-            answer.put("incusernameukr", "User name in Ukrainian cannot be empty");
+            answer.put("incusernameukr", messageSource.getMessage("incusernameukr",null,locale));
             check = false;
         }
         if (!emailValid(form.get("email"))){
-            answer.put("emailIncorrect", "emailIncorrect");
+            answer.put("emailIncorrect", messageSource.getMessage("emailIncorrect", null, locale));
             check=false;
         }
         if (passwordCheckIncorrect(form.get("password"))){
-            answer.put("incpassword", "Enter password in the format [a-zA-Z][0-9]{8,16}");
+            answer.put("incpassword", messageSource.getMessage("incpassword", null, locale));
             check=false;
         }
         res.add(answer);
@@ -121,40 +122,39 @@ public class ControllerUtils {
         return res;
 
     }
-    public static List<Object> checkCourseEditIncorrect(Map<String, String> form, Course course) {
-        //TODO - transfer to controller class o learn how to get messageSourse from here
+    public List<Object> checkCourseEditIncorrect(Map<String, String> form, Course course, Locale locale) {
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
         if (checkNameEmpty(form.get("name"))){
-            answer.put("incname", "Course name cannot be empty");
+            answer.put("incname", messageSource.getMessage("incname", null, locale));
             check = false;
         }
         if (checkNameEmpty(form.get("nameukr"))){
-            answer.put("incnameukr", "Course name in Ukrainian cannot be empty");
+            answer.put("incnameukr", messageSource.getMessage("incnameukr",null, locale));
             check = false;
         }
         if (checkNameEmpty(form.get("topic"))){
-            answer.put("inctopic", "Course topic cannot be empty");
+            answer.put("inctopic", messageSource.getMessage("inctopic", null, locale));
             check = false;
         }
         if (checkNameEmpty(form.get("topicukr"))){
-            answer.put("inctopicukr", "Course topic in Ukrainian cannot be empty");
+            answer.put("inctopicukr", messageSource.getMessage("inctopicukr", null, locale));
             check = false;
         }
         if(course.isNotStarted()){
             if (checkDate(form.get("startDate"))){
-            answer.put("incStartDate", "Start date cannot be empty or before today");
+            answer.put("incStartDate", messageSource.getMessage("incStartDate", null, locale));
             check = false;
         }
         }
         if (checkDate(form.get("endDate"))){
-            answer.put("incEndDate", "End date cannot be empty or before today");
+            answer.put("incEndDate", messageSource.getMessage("incEndDate", null, locale));
             check = false;
         }
         if ((!(answer.containsKey("incStartDate")||answer.containsKey("incEndDate")))&&
                 (LocalDate.parse(form.get("startDate")).isAfter(LocalDate.parse(form.get("endDate"))))){
-            answer.put("endBeforeStart", "End Date cannot be less then start Date");
+            answer.put("endBeforeStart", messageSource.getMessage("endBeforeStart", null, locale));
             check=false;
         }
         res.add(answer);
@@ -162,9 +162,4 @@ public class ControllerUtils {
         return res;
     }
 
-
-//    public static Map<String, String> mapQuery(String url) {
-//        Map <String, String> query = new HashMap<>();
-//
-//    }
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>CourseEdit</title>
+    <title th:text="#{courseEdit}">Course Edit</title>
 </head>
 <body>
 <div th:include="fragments/header1.html::header1"></div>
@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Name</label>
+                    <label th:text="#{CourseName}">Name</label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="name" th:value="${course.name}">
@@ -26,7 +26,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Nameukr    </label>
+                    <label th:text="#{CourseNameUkr}">Nameukr    </label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="nameukr" th:value="${course.nameukr}">
@@ -34,7 +34,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Topic      </label>
+                    <label th:text="#{Topic}>Topic      </label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="topic" th:value="${course.topic}">
@@ -42,7 +42,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Topicukr   </label>
+                    <label th:text="#{Topicukr}">Topicukr   </label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="topicukr" th:value="${course.topicukr}">
@@ -50,7 +50,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>startDate  </label>
+                    <label th:text="#{startDate}>startDate  </label>
                 </div>
                 <div class="col col-lg-3">
                     <input th:readonly="${course.isStarted()}" type="date" name="startDate" th:value="${course.startDate}">
@@ -58,7 +58,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>endDate    </label>
+                    <label th:text="#{endDate}">endDate    </label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="date" name="endDate" th:value="${course.endDate}">
@@ -66,7 +66,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label>Teacher    </label>
+                    <label th:text="#{teacher}">Teacher    </label>
                 </div>
                 <div class="col col-lg-3">
                     <span name="teacherId" th:value="${course.teacher.id}" th:text="${course.teacher.username}"></span>
@@ -74,7 +74,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <Label>Select Teacher</Label>
+                    <Label th:text="#{selectTeacher}">Select Teacher</Label>
                 </div>
                 <div class="col col-lg-2">
                     <select class="form-control" name="newTeacherId" id="ti">
@@ -91,7 +91,7 @@
         <input type="hidden" name="courseId" th:value="${course.id}" />
         <div class="row justify-content-md-left">
             <div class="col col-lg-2">
-                <button class="btn btn-secondary" type="submit">Update</button>
+                <button class="btn btn-secondary" type="submit" th:text="#{update}">Update</button>
             </div>
         </div>
         </div>

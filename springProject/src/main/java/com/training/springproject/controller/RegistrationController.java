@@ -19,13 +19,15 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private MessageSource messageSource;
-    @Autowired
     private UserService userService;
+    private ControllerUtils controllerUtils;
 
+    public RegistrationController(MessageSource messageSource, UserService userService, ControllerUtils controllerUtils) {
+        this.messageSource = messageSource;
+        this.userService = userService;
+        this.controllerUtils = controllerUtils;
+    }
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -36,7 +38,7 @@ public class RegistrationController {
     public String addUser(User user,
                           @RequestParam Map<String, String> form, Locale locale, Model model) {
         form.remove("_csrf");
-        List res = ControllerUtils.checkUserIncorrect(form, locale);
+        List res = controllerUtils.checkUserIncorrect(form, locale);
         if(!(boolean)res.get(1)){
             model.mergeAttributes((Map)res.get(0));
             model.addAllAttributes(form);

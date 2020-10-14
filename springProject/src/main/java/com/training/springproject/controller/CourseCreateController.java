@@ -5,6 +5,7 @@ import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
+import org.springframework.context.MessageSource;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -24,10 +26,14 @@ public class CourseCreateController {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
     private final CourseService courseService;
     private final UserService userService;
+    private final MessageSource messageSource;
+    private final ControllerUtils controllerUtils;
 
-    public CourseCreateController(CourseService courseService, UserService userService) {
+    public CourseCreateController(CourseService courseService, UserService userService, MessageSource messageSource, ControllerUtils controllerUtils) {
+        this.messageSource = messageSource;
         this.courseService = courseService;
         this.userService = userService;
+        this.controllerUtils = controllerUtils;
     }
     @GetMapping
     public String addCourseForm(Model model){
@@ -39,13 +45,13 @@ public class CourseCreateController {
     @PostMapping
     public String addCourse(@AuthenticationPrincipal User user,
             @RequestParam Map<String, String> form,
-            Model model) {
+            Model model, Locale locale) {
         form.remove("_csrf");
             model.mergeAttributes(form);
             UsersDTO teachers = userService.getAllTeachers();
             model.addAttribute("teachers", teachers);
 
-        List res = ControllerUtils.checkCourseIncorrect(form);
+        List res = controllerUtils.checkCourseIncorrect(form, locale);
         if(!(boolean)res.get(1)){
             model.mergeAttributes((Map)res.get(0));
             return "AdminCourse";
@@ -53,7 +59,7 @@ public class CourseCreateController {
 
         User teacher = userService.findbyId(Long.parseLong(form.get("teacherId")));
         if(courseService.checkNameDateTeacher(form.get("name"), form.get("startDate"), teacher)){
-            model.addAttribute("CourseNameDateTeacherPresent", "Course with such name teacher and start date already exists!");
+            model.addAttribute("CourseNameDateTeacherPresent", messageSource.getMessage("courAlEx", null, locale));
             model.mergeAttributes((Map)res.get(0));
             return "AdminCourse";
         }
