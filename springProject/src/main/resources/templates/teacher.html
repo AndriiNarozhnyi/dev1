@@ -9,7 +9,7 @@
 
 <div class="container">
     <h3 th:text="#{CourseFilter}"> Courses filter & list</h3>
-    <form action="/cabinet/filter" method="get">
+    <form action="/teacher/filter" method="get">
         <table>
             <thead>
             <tr class="text-center">
@@ -47,7 +47,7 @@
                 <td class="text-center"><input type="date" name="fendDate" th:value="${fendDate}?${fendDate}:''" /></td>
                 <td class="text-center"><input type="text" name="fteacher" th:value="${fteacher}?${fteacher}:''" /></td>
                 <td><button class="btn btn-primary" type="submit" th:text="#{Filter}">Filter</button></td>
-                <td><a href="/cabinet" class="btn btn-warning" th:text="#{resfilter}">Reset filter</a> </td>
+                <td><a href="/teacher" class="btn btn-warning" th:text="#{resfilter}">Reset filter</a> </td>
             </tr>
             </tbody>
         </table>
@@ -67,38 +67,20 @@
             <td colspan="2" th:text="#{no_cour_avail}"> No Courses Available </td>
         </tr>
         <div th:each="course : ${page}">
-            <div th:if="${course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
+            <div th:if="${course.getTeacher()==(#request.userPrincipal.principal)}">
                 <tr>
-            <td class="text-center"><span th:text="${course.id}"> Id</span></td>
-            <td class="text-center"><span th:text="${course.name}"> Name </span></td>
-            <td class="text-center"><span th:text="${course.nameukr}"> Name </span></td>
-            <td class="text-center"><span th:text="${course.topic}"> Name </span></td>
-            <td class="text-center"><span th:text="${course.topicukr}"> Name </span></td>
-            <td class="text-center"><span name="startDate" th:text="${#temporals.format(course.startDate, 'dd-MM-yyyy')}"> Name </span></td>
-            <td class="text-center"><span th:text="${course.duration}"> Name </span></td>
-            <td class="text-center"><span th:text="${#temporals.format(course.endDate, 'dd-MM-yyyy')}"> Name </span></td>
-            <td class="text-center"><span th:text="${course.teacher.username}"> Name </span></td>
-            <td class="text-center"><span th:text="${course.getEnrolledStudents().size()}"</td>
-            <td class="text-center" th:if="${!course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
-                <div th:if="${course.isNotStarted()}">
-                    <form action="/cabinet/enroll" method="post">
-                        <input type="hidden" name="courseId" th:value="${course.id}">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                        <button class="btn btn-success" type="submit" th:text="#{enroll}">Enroll</button>
-                    </form>
-                </div>
-            </td>
-            <td class="text-center" th:if="${course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
-                <div th:if="${course.isNotStarted()}">
-                    <form action="/cabinet/unenroll" method="post">
-                        <input type="hidden" name="courseId" th:value="${course.id}">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                        <button class="btn btn-warning" type="submit" th:text="#{unenroll}">Unenroll</button>
-                    </form>
-                </div>
-            </td>
+                    <td class="text-center"><span th:text="${course.id}"> Id</span></td>
+                    <td class="text-center"><span th:text="${course.name}"> Name </span></td>
+                    <td class="text-center"><span th:text="${course.nameukr}"> Name </span></td>
+                    <td class="text-center"><span th:text="${course.topic}"> Name </span></td>
+                    <td class="text-center"><span th:text="${course.topicukr}"> Name </span></td>
+                    <td class="text-center"><span name="startDate" th:text="${#temporals.format(course.startDate, 'dd-MM-yyyy')}"> Name </span></td>
+                    <td class="text-center"><span th:text="${course.duration}"> Name </span></td>
+                    <td class="text-center"><span th:text="${#temporals.format(course.endDate, 'dd-MM-yyyy')}"> Name </span></td>
+                    <td class="text-center"><span th:text="${course.teacher.username}"> Name </span></td>
+                    <td class="text-center"><span th:text="${course.getEnrolledStudents().size()}"</td>
                 </tr>
-        </div>
+            </div>
         </div>
 
 

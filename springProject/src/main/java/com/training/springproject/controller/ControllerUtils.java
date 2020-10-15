@@ -1,7 +1,9 @@
 package com.training.springproject.controller;
 
 import com.training.springproject.entity.Course;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -14,10 +16,15 @@ import java.util.stream.Collectors;
 
 
 public class ControllerUtils {
-    private final MessageSource messageSource;
+    @Autowired
+    private MessageSource messageSource;
 
     public ControllerUtils(MessageSource messageSource) {
         this.messageSource = messageSource;
+    }
+
+    public ControllerUtils() {
+
     }
 
     Map<String, String> getErrors(BindingResult bindingResult, Locale locale) {

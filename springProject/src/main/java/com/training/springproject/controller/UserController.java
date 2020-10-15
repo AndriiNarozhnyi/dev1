@@ -24,9 +24,9 @@ import java.util.Map;
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
-    private MessageSource messageSource;
-    private UserService userService;
-    private ControllerUtils controllerUtils;
+    private final MessageSource messageSource;
+    private final UserService userService;
+    private final ControllerUtils controllerUtils;
 
     public UserController(MessageSource messageSource, UserService userService, ControllerUtils controllerUtils) {
         this.messageSource = messageSource;

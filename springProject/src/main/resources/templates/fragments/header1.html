@@ -30,6 +30,11 @@
             </li>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
+                <li class="nav-item" th:if="${#request.userPrincipal.principal.isTeacher()}">
+                    <a class="nav-link" href="/teacher" th:text="#{teacherCabinet}">Teacher Cabinet</a>
+                </li>
+            </div>
+            <div th:if="${#request.userPrincipal}!=null">
             <li class="nav-item" th:if="${#request.userPrincipal.principal.isAdmin()}">
                 <a class="nav-link" href="/admincreate" th:text="#{CreateCourse}">Create Course</a>
             </li>
@@ -46,6 +51,7 @@
         <div>
             <div th:if="${#request.userPrincipal}==null">
                 <a class="btn btn-success mx-2" href="/login" th:text="#{login}">Login</a>
+                <a class="btn btn-success mx-2" href="/registration" th:text="#{registration}">Registration</a>
             </div>
             <div th:if="${#request.userPrincipal}!=null">
                 <form action="/logout" method="post">

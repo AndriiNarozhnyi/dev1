@@ -121,6 +121,34 @@ public class CourseController {
         return "cabinet";
     }
 
+    @GetMapping("/teacher/filter")
+    public String courseFilterTeacher(@AuthenticationPrincipal User user,
+                                      @RequestParam Map<String,String> form,
+                                      @PageableDefault(sort = {"startDate"},
+                                              direction = Sort.Direction.ASC) Pageable pageable,
+                                      Model model){
+        StringBuilder url = new StringBuilder("/teacher/filter");
+        List<Object> result = courseService.statusDispatcher(form, pageable, url);
+
+        model.addAttribute("page", result.get(0));
+        model.mergeAttributes((Map<String, String>)result.get(1));
+        model.addAttribute("am", result.get(2).toString().contains("?")?1:0);
+        model.addAttribute("url", result.get(2));
+
+        return "teacher";
+    }
+
+    @GetMapping("/teacher")
+    public String showCoursesTeacher (@AuthenticationPrincipal User user,
+                                      @PageableDefault(sort = {"startDate"},
+                                              direction = Sort.Direction.ASC) Pageable pageable,
+                                      Model model) throws Exception{
+        Page<Course> page = courseService.getAllCourses(pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("url", "/teacher");
+        return "teacher";
+    }
+
 
 
 }

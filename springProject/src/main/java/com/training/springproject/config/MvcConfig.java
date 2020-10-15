@@ -1,5 +1,7 @@
 package com.training.springproject.config;
 
+import com.training.springproject.controller.ControllerUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -34,6 +36,11 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    @Bean
+    public ControllerUtils controllerUtils(){
+        return new ControllerUtils();
     }
 
 }
