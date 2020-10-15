@@ -1,5 +1,6 @@
 package com.training.springproject.repository;
 
+import com.training.springproject.dto.UserDTO;
 import com.training.springproject.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query (value ="select u.id,u.username,u.usernameukr,u.email,u.password,u.active " +
             "from user u inner join user_role ur on u.id = ur.user_id where ur.roles='TEACHER' and u.active=1"
             , nativeQuery = true)
-    List<User> findByRoleTeacher();
+    List<UserDTO> findByRoleTeacher();
 
     Optional<User> findByIdAndActiveTrue(Long id);
     @Override

@@ -37,10 +37,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
-    public UsersDTO getAllUsers() {
-        //TODO checking for an empty user list
-        return new UsersDTO(userRepository.findAll());
-    }
+
     public Page<User> findAllUsers(Pageable pageable){
         return userRepository.findAll(pageable);
     }

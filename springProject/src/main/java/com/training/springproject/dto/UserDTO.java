@@ -1,7 +1,16 @@
 package com.training.springproject.dto;
 
+import com.training.springproject.entity.Course;
 import com.training.springproject.entity.Role;
+import com.training.springproject.entity.User;
+import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserDTO {
@@ -9,9 +18,17 @@ public class UserDTO {
     private String username;
     private String usernameukr;
     private String email;
-    private String password;
     private boolean active;
     private Set<Role> roles;
+    Set<Course> takenCourses = new HashSet<>();
+
+    public Set<Course> getTakenCourses() {
+        return takenCourses;
+    }
+
+    public void setTakenCourses(Set<Course> takenCourses) {
+        this.takenCourses = takenCourses;
+    }
 
     public Long getId() {
         return id;
@@ -33,8 +50,8 @@ public class UserDTO {
         return usernameukr;
     }
 
-    public void setUsernameukr(String usernameukr) {
-        this.usernameukr = usernameukr;
+    public void setUsernameukr(String username_ukr) {
+        this.usernameukr = username_ukr;
     }
 
     public String getEmail() {
@@ -43,14 +60,6 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public boolean isActive() {
@@ -65,20 +74,44 @@ public class UserDTO {
         return roles;
     }
 
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
+
+    public boolean isTeacher() {
+        return roles.contains(Role.TEACHER);
+    }
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public UserDTO(Long id, String username, String usernameukr, String email, String password, boolean active, Set<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.usernameukr = usernameukr;
-        this.email = email;
-        this.password = password;
-        this.active = active;
-        this.roles = roles;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return username.equals(userDTO.username);
     }
 
-    public UserDTO() {
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
+    }
+
+    public boolean isStudent(){
+        return roles.contains(Role.USER);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", username_ukr='" + usernameukr + '\'' +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                ", roles=" + roles +
+                '}';
     }
 }

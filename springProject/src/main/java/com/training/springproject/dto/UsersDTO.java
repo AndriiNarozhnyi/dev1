@@ -7,7 +7,7 @@ import java.util.List;
 public class UsersDTO {
     private List<User> users;
 
-    public UsersDTO(List<User> users) {
+    public UsersDTO(List<UserDTO> users) {
         this.users = users;
     }
 
