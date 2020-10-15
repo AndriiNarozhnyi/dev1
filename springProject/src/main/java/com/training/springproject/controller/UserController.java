@@ -1,5 +1,6 @@
 package com.training.springproject.controller;
 
+import com.training.springproject.dto.UserDTO;
 import com.training.springproject.entity.Role;
 import com.training.springproject.entity.User;
 import com.training.springproject.service.UserService;
@@ -59,7 +60,7 @@ public class UserController {
     public String userList(Model model,
                            @PageableDefault(sort = {"id"},
                                    direction = Sort.Direction.ASC) Pageable pageable){
-        Page<User> page = userService.findAllUsers(pageable);
+        Page<UserDTO> page = userService.findAllUsers(pageable);
         model.addAttribute("page", page);
         model.addAttribute("url", "/user");
         return "userlist";
@@ -73,19 +74,20 @@ public class UserController {
     }
 
     @PostMapping("/user/save")
-    public String userSave(@Valid User editedUser,
+    public String userSave(@Valid UserDTO editedUser,
                            BindingResult bindingResult,
                            @RequestParam Map<String, String> form,
-                           @RequestParam("userId") User user,
-                            Model model, Locale locale){
+                           @RequestParam Long userId,
+                            Model model, Locale locale) throws Exception {
+        UserDTO userDTO = userService.findbyIdU(userId);
         if(bindingResult.hasErrors()){
             Map<String, String> errorsMap = controllerUtils.getErrors(bindingResult, locale);
             model.addAttribute("error", errorsMap);
-            model.addAttribute("user", user);
+            model.addAttribute("user", userDTO);
             model.addAttribute("roles", Role.values());
             return "userEdit";
         } else {
-            userService.saveEdited(user, form, editedUser);
+            userService.saveEdited(userDTO, form, editedUser);
         }
         return "redirect:/user";
     }

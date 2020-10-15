@@ -41,14 +41,14 @@
     <tr th:if="${page.empty}">
         <td colspan="2" th:text="#{noUsAv}"> No Users Available </td>
     </tr>
-    <tr class="text-center" th:each="user : ${page}">
-        <td><span th:text="${user.id}"> Id</span></td>
-        <td><span th:text="${user.username}"> Name </span></td>
-        <td><span th:text="${user.usernameukr}"> Name </span></td>
-        <td><span th:text="${user.email}"> Name </span></td>
-        <td><span th:text="${user.isActive()}?'YES':'NO'"></span></td>
-        <td><span th:text="${#strings.setJoin(user.roles,',')}"> Name </span></td>
-        <td><a th:href="@{/user/{id}(id=${user.id})}">edit</a></td>
+    <tr class="text-center" th:each="userDTO : ${page}">
+        <td><span th:text="${userDTO.id}"> Id</span></td>
+        <td><span th:text="${userDTO.username}"> Name </span></td>
+        <td><span th:text="${userDTO.usernameukr}"> Name </span></td>
+        <td><span th:text="${userDTO.email}"> Name </span></td>
+        <td><span th:text="${userDTO.isActive()}?'YES':'NO'"></span></td>
+        <td><span th:text="${#strings.setJoin(userDTO.roles,',')}"> Name </span></td>
+        <td><a th:href="@{/user/{id}(id=${userDTO.id})}">edit</a></td>
     </tr>
     </tbody>
 </table>

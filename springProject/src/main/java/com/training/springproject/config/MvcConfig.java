@@ -1,6 +1,7 @@
 package com.training.springproject.config;
 
 import com.training.springproject.controller.ControllerUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,11 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public ControllerUtils controllerUtils(){
         return new ControllerUtils();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }

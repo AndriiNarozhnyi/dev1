@@ -1,6 +1,7 @@
 package com.training.springproject.controller;
 
 
+import com.training.springproject.dto.UserDTO;
 import com.training.springproject.entity.User;
 import com.training.springproject.repository.UserRepository;
 import com.training.springproject.service.UserService;
@@ -45,7 +46,7 @@ public class RegistrationController {
             return "registration";
         }
 
-            User userFromDb = userService.findUserByUserName(user.getUsername());
+            UserDTO userFromDb = userService.findUserByUserName(user.getUsername());
             if (userFromDb != null) {
                 model.addAttribute("message_pres", messageSource.getMessage("messageUserPresent", null, locale));
                 model.mergeAttributes(form);

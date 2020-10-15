@@ -17,11 +17,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query (value ="select u.id,u.username,u.usernameukr,u.email,u.password,u.active " +
             "from user u inner join user_role ur on u.id = ur.user_id where ur.roles='TEACHER' and u.active=1"
             , nativeQuery = true)
-    List<UserDTO> findByRoleTeacher();
+    List<User> findByRoleTeacher();
 
     Optional<User> findByIdAndActiveTrue(Long id);
-    @Override
-    Page<User> findAll(Pageable pageable);
+
+
+    Page<User> findAllByUsernameLike(String name, Pageable pageable);
 
     Page<User> findByUsernameLikeAndUsernameukrLike(String s, String s1, Pageable pageable);
 }

@@ -34,7 +34,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label th:text="#{Topic}>Topic      </label>
+                    <label th:text="#{Topic}">Topic      </label>
                 </div>
                 <div class="col col-lg-3">
                     <input type="text" name="topic" th:value="${course.topic}">
@@ -50,7 +50,7 @@
             </div>
             <div class="row justify-content-md-left">
                 <div class="col col-lg-2">
-                    <label th:text="#{startDate}>startDate  </label>
+                    <label th:text="#{startDate}">startDate  </label>
                 </div>
                 <div class="col col-lg-3">
                     <input th:readonly="${course.isStarted()}" type="date" name="startDate" th:value="${course.startDate}">
