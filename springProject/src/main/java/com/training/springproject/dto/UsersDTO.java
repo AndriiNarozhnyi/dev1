@@ -1,7 +1,5 @@
 package com.training.springproject.dto;
 
-import com.training.springproject.entity.User;
-
 import java.util.List;
 
 public class UsersDTO {

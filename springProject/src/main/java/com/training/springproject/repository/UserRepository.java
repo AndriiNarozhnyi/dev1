@@ -1,6 +1,5 @@
 package com.training.springproject.repository;
 
-import com.training.springproject.dto.UserDTO;
 import com.training.springproject.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

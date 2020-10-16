@@ -3,9 +3,7 @@ package com.training.springproject.controller;
 
 import com.training.springproject.dto.UserDTO;
 import com.training.springproject.entity.User;
-import com.training.springproject.repository.UserRepository;
 import com.training.springproject.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

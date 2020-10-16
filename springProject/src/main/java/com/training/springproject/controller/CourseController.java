@@ -1,7 +1,6 @@
 package com.training.springproject.controller;
 
 import com.training.springproject.dto.CourseDTO;
-import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
 import com.training.springproject.service.UserService;
