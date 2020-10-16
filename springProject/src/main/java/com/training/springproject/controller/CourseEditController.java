@@ -1,5 +1,6 @@
 package com.training.springproject.controller;
 
+import com.training.springproject.dto.CourseDTO;
 import com.training.springproject.dto.UsersDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
@@ -50,13 +51,12 @@ public class CourseEditController {
                 @RequestParam Map<String, String> form, Model model, Locale locale) throws Exception {
         form.remove("_csrf");
             List res = controllerUtils.checkCourseEditIncorrect(
-                    form, courseService.findById(courseId).orElseThrow(
-                            ()->new NoSuchCourseException("Course does not exist")), locale);
+                    form, courseService.findByIdOut(courseId), locale);
 
             if(!(boolean)res.get(1)){
                 model.mergeAttributes((Map)res.get(0));
-                Course course = courseService.findById(courseId).get();
-                model.addAttribute("course", course);
+                CourseDTO courseDTO = courseService.findByIdOut(courseId);
+                model.addAttribute("course", courseDTO);
                 UsersDTO teachers = userService.getAllTeachers();
                 model.addAttribute("teachers", teachers);
                 return "courseEdit";

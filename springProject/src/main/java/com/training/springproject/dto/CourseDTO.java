@@ -1,16 +1,40 @@
 package com.training.springproject.dto;
 
+import com.training.springproject.entity.Course;
+import com.training.springproject.entity.User;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class CourseDTO {
     private Integer id;
     private String name;
-    private String name_ukr;
+    private String nameukr;
     private String topic;
-    private String topic_ukr;
+    private String topicukr;
     private LocalDate startDate;
     private LocalDate endDate;
     private long duration;
+    private UserDTO teacher;
+    Set<UserDTO> enrolledStudents = new HashSet<>();
+
+    public CourseDTO(Integer id, String name, String nameukr, String topic, String topicukr, LocalDate startDate, LocalDate endDate, long duration, UserDTO teacher) {
+        this.id = id;
+        this.name = name;
+        this.nameukr = nameukr;
+        this.topic = topic;
+        this.topicukr = topicukr;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.duration = duration;
+        this.teacher = teacher;
+    }
 
     public CourseDTO() {
     }
@@ -31,12 +55,12 @@ public class CourseDTO {
         this.name = name;
     }
 
-    public String getName_ukr() {
-        return name_ukr;
+    public String getNameukr() {
+        return nameukr;
     }
 
-    public void setName_ukr(String name_ukr) {
-        this.name_ukr = name_ukr;
+    public void setNameukr(String nameukr) {
+        this.nameukr = nameukr;
     }
 
     public String getTopic() {
@@ -47,12 +71,12 @@ public class CourseDTO {
         this.topic = topic;
     }
 
-    public String getTopic_ukr() {
-        return topic_ukr;
+    public String getTopicukr() {
+        return topicukr;
     }
 
-    public void setTopic_ukr(String topic_ukr) {
-        this.topic_ukr = topic_ukr;
+    public void setTopicukr(String topicukr) {
+        this.topicukr = topicukr;
     }
 
     public LocalDate getStartDate() {
@@ -79,14 +103,67 @@ public class CourseDTO {
         this.duration = duration;
     }
 
-    public CourseDTO(Integer id, String name, String name_ukr, String topic, String topic_ukr, LocalDate startDate, LocalDate endDate, long duration) {
-        this.id = id;
-        this.name = name;
-        this.name_ukr = name_ukr;
-        this.topic = topic;
-        this.topic_ukr = topic_ukr;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.duration = duration;
+    public UserDTO getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(UserDTO teacher) {
+        this.teacher = teacher;
+    }
+
+    public Set<UserDTO> getEnrolledStudents() {
+        return enrolledStudents;
+    }
+    public Set<Long> getEnrolledStudentsId(){
+        Set<Long> Ids = new HashSet<>();
+        Set<UserDTO>usr = getEnrolledStudents();
+        for (UserDTO userDTO:usr){
+            Ids.add(userDTO.getId());
+        }
+        return Ids;
+    }
+
+    public void setEnrolledStudents(Set<UserDTO> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CourseDTO courseDTO = (CourseDTO) o;
+        return id.equals(courseDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public boolean isStarted(){
+        return LocalDate.now().isAfter(startDate)&&LocalDate.now().isBefore(endDate);
+    }
+
+    public boolean isFinished(){
+        return LocalDate.now().isAfter(endDate);
+    }
+
+    public boolean isNotStarted(){
+        return LocalDate.now().isBefore(startDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", nameukr='" + nameukr + '\'' +
+                ", topic='" + topic + '\'' +
+                ", topicukr='" + topicukr + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", duration=" + duration +
+                ", teacher=" + teacher +
+                '}';
     }
 }

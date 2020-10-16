@@ -1,5 +1,6 @@
 package com.training.springproject.controller;
 
+import com.training.springproject.dto.CourseDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.service.CourseService;
@@ -46,7 +47,7 @@ public class CourseController {
                                @PageableDefault(sort = {"startDate"},
                                        direction = Sort.Direction.ASC) Pageable pageable,
                                Model model) throws Exception{
-        Page<Course> page = courseService.getAllCourses(pageable);
+        Page<CourseDTO> page = courseService.getAllCourses(pageable);
         model.addAttribute("page", page);
         model.addAttribute("url", "/courses");
         return "courses";
@@ -115,7 +116,7 @@ public class CourseController {
                                @PageableDefault(sort = {"startDate"},
                                        direction = Sort.Direction.ASC) Pageable pageable,
                                Model model) throws Exception{
-        Page<Course> page = courseService.getAllCourses(pageable);
+        Page<CourseDTO> page = courseService.getAllCourses(pageable);
         model.addAttribute("page", page);
         model.addAttribute("url", "/cabinet");
         return "cabinet";
@@ -143,7 +144,7 @@ public class CourseController {
                                       @PageableDefault(sort = {"startDate"},
                                               direction = Sort.Direction.ASC) Pageable pageable,
                                       Model model) throws Exception{
-        Page<Course> page = courseService.getAllCourses(pageable);
+        Page<CourseDTO> page = courseService.getAllCourses(pageable);
         model.addAttribute("page", page);
         model.addAttribute("url", "/teacher");
         return "teacher";

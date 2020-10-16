@@ -1,9 +1,8 @@
 package com.training.springproject.controller;
 
-import com.training.springproject.entity.Course;
+import com.training.springproject.dto.CourseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -129,7 +128,7 @@ public class ControllerUtils {
         return res;
 
     }
-    public List<Object> checkCourseEditIncorrect(Map<String, String> form, Course course, Locale locale) {
+    public List<Object> checkCourseEditIncorrect(Map<String, String> form, CourseDTO courseDTO, Locale locale) {
         List<Object> res = new ArrayList<>();
         Map<String, String> answer = new HashMap<>();
         boolean check = true;
@@ -149,7 +148,7 @@ public class ControllerUtils {
             answer.put("inctopicukr", messageSource.getMessage("inctopicukr", null, locale));
             check = false;
         }
-        if(course.isNotStarted()){
+        if(courseDTO.isNotStarted()){
             if (checkDate(form.get("startDate"))){
             answer.put("incStartDate", messageSource.getMessage("incStartDate", null, locale));
             check = false;

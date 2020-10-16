@@ -91,12 +91,12 @@ public class UserDTO {
         if (this == o) return true;
         if (o == null) return false;
         UserDTO userDTO = (UserDTO) o;
-        return username.equals(userDTO.username);
+        return id.equals(userDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username);
+        return Objects.hash(id);
     }
 
     public boolean isStudent(){

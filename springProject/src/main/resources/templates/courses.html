@@ -79,7 +79,7 @@
         <td class="text-center"><span th:text="${#temporals.format(course.endDate, 'dd-MM-yyyy')}"> Name </span></td>
         <td class="text-center"><span th:text="${course.teacher.username}"> Name </span></td>
         <td class="text-center"><span th:text="${course.getEnrolledStudents().size()}"</td>
-        <td class="text-center" th:if="${!course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
+        <td class="text-center" th:if="${!course.getEnrolledStudentsId().contains(#request.userPrincipal.principal.getId())}">
             <div th:if="${course.isNotStarted()}">
                 <form action="/courses/enroll" method="post">
                     <input type="hidden" name="courseId" th:value="${course.id}">
@@ -88,7 +88,7 @@
             </form>
             </div>
         </td>
-        <td class="text-center" th:if="${course.getEnrolledStudents().contains(#request.userPrincipal.principal)}">
+        <td class="text-center" th:if="${course.getEnrolledStudentsId().contains(#request.userPrincipal.principal.getId())}">
             <div th:if="${course.isNotStarted()}">
             <form action="/courses/unenroll" method="post">
                 <input type="hidden" name="courseId" th:value="${course.id}">

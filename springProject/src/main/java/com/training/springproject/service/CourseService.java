@@ -1,5 +1,6 @@
 package com.training.springproject.service;
 
+import com.training.springproject.dto.CourseDTO;
 import com.training.springproject.entity.Course;
 import com.training.springproject.entity.User;
 import com.training.springproject.exceptions.CourseNotFoundException;
@@ -7,9 +8,12 @@ import com.training.springproject.exceptions.NoSuchActiveUserException;
 import com.training.springproject.exceptions.NoSuchCourseException;
 import com.training.springproject.repository.CourseRepository;
 import com.training.springproject.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,6 +27,8 @@ public class CourseService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eventLogger");
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     public CourseService(CourseRepository courseRepository, UserRepository userRepository){
@@ -30,8 +36,13 @@ public class CourseService {
         this.userRepository = userRepository;
     }
 
-    public Page<Course> getAllCourses(Pageable pageable) {
-        return courseRepository.findAll(pageable);
+    public Page<CourseDTO> getAllCourses(Pageable pageable) {
+        Page<Course> coursePage = courseRepository.findAll(pageable);
+        List<CourseDTO> dtos = new ArrayList<>();
+        for (Course course : coursePage){
+            dtos.add(convertToDto(course));
+        }
+        return new PageImpl<>(dtos, pageable, coursePage.getTotalElements());
     }
 
     public void saveNewCourse(Course course, Long id){
@@ -44,6 +55,10 @@ public class CourseService {
 
     public Optional<Course> findById(Integer courseId) {
         return courseRepository.findById(courseId);
+    }
+    public CourseDTO findByIdOut(Integer courseId) {
+        return convertToDto(courseRepository.findById(courseId)
+                .orElseThrow(()-> new NoSuchCourseException("No such course")));
     }
 
     public boolean updateCourse(Course course) {
@@ -181,20 +196,37 @@ boolean saveEditedCourse(Course course, Map<String, String> form, Long id) throw
                 page = findByFilter(form, pageable);
                 break;
         }
-        System.out.println(form.get("fstartDate"));
-        System.out.println(form.get("fendDate"));
-                result.add(page);
+        Page<CourseDTO> pageDTO = toDtoPage(page, pageable);
+
+                result.add(pageDTO);
                 result.add(map);
                 result.add(url.toString());
                 return result;
 
     }
     @Transactional
-    public void delete(Integer id) {
+    public boolean delete(Integer id) {
         Course course = courseRepository.findById(id).orElseThrow(()->new NoSuchCourseException("Course does not exist"));
         course.getEnrolledStudents().clear();
         courseRepository.save(course);
             courseRepository.delete(course);
-
+            return true;
     }
+    private CourseDTO convertToDto(Course course) {
+        CourseDTO courseDTO = modelMapper.map(course, CourseDTO.class);
+        return courseDTO;
+    }
+
+    private Course convertToCourse(CourseDTO courseDTO) throws ParseException {
+        Course course = modelMapper.map(courseDTO, Course.class);
+        return course;
+    }
+    private Page<CourseDTO> toDtoPage(Page<Course> coursePage, Pageable pageable){
+        List<CourseDTO> dtos = new ArrayList<>();
+        for (Course course : coursePage){
+            dtos.add(convertToDto(course));
+        }
+        return new PageImpl<>(dtos, pageable, coursePage.getTotalElements());
+    }
+
 }

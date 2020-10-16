@@ -67,7 +67,7 @@
             <td colspan="2" th:text="#{no_cour_avail}"> No Courses Available </td>
         </tr>
         <div th:each="course : ${page}">
-            <div th:if="${course.getTeacher()==(#request.userPrincipal.principal)}">
+            <div th:if="${course.getTeacher().getId()==(#request.userPrincipal.principal.getId())}">
                 <tr>
                     <td class="text-center"><span th:text="${course.id}"> Id</span></td>
                     <td class="text-center"><span th:text="${course.name}"> Name </span></td>
